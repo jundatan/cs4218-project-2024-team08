@@ -1,6 +1,6 @@
 import categoryModel from "../models/categoryModel.js";
 import slugify from "slugify";
-import { createCategoryController } from "../controllers/categoryController";
+import { createCategoryController } from "../controllers/categoryController.js";
 
 // Mock its dependencies
 jest.mock("../models/categoryModel.js");
@@ -16,6 +16,12 @@ describe('Given the Category Controller', () => {
             status: jest.fn(() => res), // "() => res" is required as status usually returns a res object after configuring a HTTP status code
             send: jest.fn(),
         };
+        jest.spyOn(console, 'log').mockImplementation(() => {}); // Mock console.log
+    });
+
+    afterEach(() => {
+        // Restore console.log after each test
+        console.log.mockRestore();
     });
 
     describe('When testing the createCategoryController method', () => {
@@ -25,7 +31,7 @@ describe('Given the Category Controller', () => {
             await createCategoryController(req, res);
 
             expect(res.status).toHaveBeenCalledWith(401);
-            expect(res.send).toHaveBeenCalledWith("Name is required");
+            expect(res.send).toHaveBeenCalledWith({ message: "Name is required" });
         });
 
         test('Then return 401 if the name given is a false value', async () => {
@@ -35,7 +41,7 @@ describe('Given the Category Controller', () => {
             await createCategoryController(req, res);
 
             expect(res.status).toHaveBeenCalledWith(401);
-            expect(res.send).toHaveBeenCalledWith("Name is required");
+            expect(res.send).toHaveBeenCalledWith({ message: "Name is required" });
         });
 
         test('Then return 200 if the name given has an existing category in the database', async () => {
@@ -82,7 +88,7 @@ describe('Given the Category Controller', () => {
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.send).toHaveBeenCalledWith({
                 success: false,
-                errro,
+                error: new Error('Database Error'),
                 message: "Errro in Category",
             });
         });
@@ -94,11 +100,11 @@ describe('Given the Category Controller', () => {
 
             await createCategoryController(req, res);
 
-            expect(console.log).toHaveBeenCalledWith(new Error('Error with input to Databas'));
+            expect(console.log).toHaveBeenCalledWith(new Error('Error with input to Database'));
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.send).toHaveBeenCalledWith({
                 success: false,
-                errro,
+                error: new Error('Error with input to Database'),
                 message: "Errro in Category",
             });
         });
