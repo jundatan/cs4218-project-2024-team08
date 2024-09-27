@@ -8,7 +8,7 @@ jest.mock("../models/categoryModel.js");
 jest.mock("slugify");
 
 describe('Category Controller', () => {
-    let req, res, next, error;
+    let req, res, error;
 
     // Mock the request and response objects
     beforeEach(() => {
@@ -336,7 +336,7 @@ describe('Category Controller', () => {
                 expect(res.status).toHaveBeenCalledWith(200);
                 expect(res.send).toHaveBeenCalledWith({
                     success: true,
-                    message: "Categry Deleted Successfully",
+                    message: "Categry Deleted Successfully", 
                 });
             });
         });
