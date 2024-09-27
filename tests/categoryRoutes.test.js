@@ -14,8 +14,9 @@ import {
 jest.mock("../middlewares/authMiddleware.js");
 jest.mock("../controllers/categoryController.js");
 
+// Initialize the router for testing of actual HTTP requests
 const app = express();
-app.use(express.json()); // to parse JSON body
+app.use(express.json());
 app.use(router);
 
 describe("Category Routes", () => {
@@ -26,7 +27,7 @@ describe("Category Routes", () => {
 
     describe("Given POST /create-category", () => {
         describe("When it is a valid request", () => {
-            test("Then return code 201", async () => {
+            it("should return code 201", async () => {
                 createCategoryController.mockImplementation((req, res) => {
                     res.status(201).json({ message: "Category created successfully" });
                 });
@@ -42,7 +43,7 @@ describe("Category Routes", () => {
         });
 
         describe("When there are any errors", () => {
-            test("Then it should not return status code 201", async () => {
+            it("should not return status code 201", async () => {
                 createCategoryController.mockImplementation((req, res) => {
                     res.status(500).json({ message: "Error" });
                 });
@@ -60,7 +61,7 @@ describe("Category Routes", () => {
 
     describe("Given PUT /update-category/:id", () => {
         describe("When it is a valid request", () => {
-            test("Then return status code 200", async () => {
+            it("should return status code 200", async () => {
                 const categoryId = "123"; // replace with a mock ID
                 updateCategoryController.mockImplementation((req, res) => {
                     res.status(200).json({ message: "Category Updated Successfully" });
@@ -77,7 +78,7 @@ describe("Category Routes", () => {
         });
 
         describe("When there are any errors", () => {
-            test("Then it should not return status code 200", async () => {
+            it("should not return status code 200", async () => {
                 const categoryId = "123"; // replace with a mock ID
                 updateCategoryController.mockImplementation((req, res) => {
                     res.status(500).json({ message: "Error while updating category" });

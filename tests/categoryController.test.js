@@ -28,7 +28,7 @@ describe('Category Controller', () => {
 
     describe('Given the createCategoryController method', () => {
         describe('When no name is given', () => {
-            test('Then return status code 401', async () => {
+            it('should return status code 401', async () => {
                 req.body = {};
     
                 await createCategoryController(req, res);
@@ -39,7 +39,7 @@ describe('Category Controller', () => {
         });
 
         describe('When the name given is a false value', () => {
-            test('Then return status code 401', async () => {
+            it('should return status code 401', async () => {
                 // False values can be when name is false, null, undefined, 0, NaN or empty string
                 req.body = { name: null }; 
     
@@ -51,7 +51,7 @@ describe('Category Controller', () => {
         });
 
         describe('When the name given has an existing match in the category database', () => {
-            test('Then return status code 200', async () => {
+            it('should return status code 200', async () => {
                 req.body = { name: 'Sofa' };
                 categoryModel.findOne.mockResolvedValue({ name: 'Sofa' });
     
@@ -66,7 +66,7 @@ describe('Category Controller', () => {
         });
 
         describe('When the name given does not have any entries in the category database', () => {
-            test('Then return status code 201', async () => {
+            it('should return status code 201', async () => {
                 req.body = { name: 'Armchair' };
                 categoryModel.findOne.mockResolvedValue(null);
                 slugify.mockReturnValue('armchair');
@@ -89,7 +89,7 @@ describe('Category Controller', () => {
         });
 
         describe('When there is an error with the database', () => {
-            test('Then return status code 500', async () => {
+            it('should return status code 500', async () => {
                 req.body = { name: 'Error' };
                 error = new Error('Database Error');
                 categoryModel.findOne.mockRejectedValue(error);
@@ -107,7 +107,7 @@ describe('Category Controller', () => {
         });
 
         describe('When the name given is truthy', () => {
-            test('Then return status code 500', async () => {
+            it('should return status code 500', async () => {
                 // This means when name is recognised as true by the machine and hence !name returns false, eg are [] and {}
                 req.body = { name: {} };
                 error = new Error('Error with input to Database');
@@ -128,7 +128,7 @@ describe('Category Controller', () => {
 
     describe('Given the updateCategoryController method', () => {
         describe('When there is an error with the query request to database', () => {
-            test('Then return status code 500', async () => {
+            it('should return status code 500', async () => {
                 req.body = { name: 'Chair' }; // Valid Name
                 req.params = { id: '12345' }; // ID exists in database
                 error = new Error('Database Error');
@@ -147,7 +147,7 @@ describe('Category Controller', () => {
         });
 
         describe('When given name is invalid', () => {
-            test('Then return status code 400', async () => {
+            it('should return status code 400', async () => {
                 req.body = { name: null };
                 req.params = { id: '12345' }; // ID exists in database
 
@@ -161,7 +161,7 @@ describe('Category Controller', () => {
         });
 
         describe('When the category is not found', () => {
-            test('Then return status code 404', async () => {
+            it('should return status code 404', async () => {
                 req.body = { name: "Table" };
                 req.params = { id: 'invalid-id' };
                 slugify.mockReturnValue('table');
@@ -177,7 +177,7 @@ describe('Category Controller', () => {
         });
 
         describe('When given name and id are both valid', () => {
-            test('Then return status code 200', async () => {
+            it('should return status code 200', async () => {
                 req.body = { name: "Table" };
                 req.params = { id: '12345' };
                 slugify.mockReturnValue('table');
@@ -200,7 +200,7 @@ describe('Category Controller', () => {
 
     describe('Given the categoryControlller method', () => {
         describe('When there is an error with categoryModel', () => {
-            test('Then return status code 500', async () => {
+            it('should return status code 500', async () => {
                 error = new Error('Error retrieving from categoryModel');
                 categoryModel.find.mockRejectedValue(error);
 
@@ -218,7 +218,7 @@ describe('Category Controller', () => {
 
         describe('When there is no error retrieving all categories from its list', () => {
             // In the case where there is no category stored in the list, mockCategories should be []
-            test('Then return status code 200', async () => {
+            it('should return status code 200', async () => {
                 const mockCategories = [
                     { name: 'Table', slug: 'table'},
                     { name: 'Chair', slug: 'chair'},
@@ -239,7 +239,7 @@ describe('Category Controller', () => {
 
     describe('Given the singleCategoryController method', () => {
         describe('When there is a match of category', () => {
-            test('Then return status code 200', async () => {
+            it('should return status code 200', async () => {
                 req.params.slug = 'chair';
                 const mockCategory = { name: 'Chair', slug: 'chair' };
                 categoryModel.findOne.mockResolvedValue(mockCategory);
@@ -256,7 +256,7 @@ describe('Category Controller', () => {
         });
 
         describe('When the category does not exist', () => {
-            test('Then return status code 404', async () => {
+            it('should return status code 404', async () => {
                 req.params.slug = 'keyboard';
                 error = new Error("Category does not exist!");
                 categoryModel.findOne.mockResolvedValue(null);
@@ -273,7 +273,7 @@ describe('Category Controller', () => {
         });
 
         describe('When an error occurs that is not 404', () => {
-            test('Then return status code 500', async () => {
+            it('should return status code 500', async () => {
                 req.params.slug = 'chair';
                 error = new Error("An error has occurred.");
                 categoryModel.findOne.mockRejectedValue(error);
@@ -292,7 +292,7 @@ describe('Category Controller', () => {
 
     describe('Given the deleteCategoryCOntroller', () => {
         describe('When the category does not exist', () => {
-            test('Then return status code 404', async () => {
+            it('should return status code 404', async () => {
                 req.params = { id: "12345" };
                 error = new Error("Category does not exist!");
                 categoryModel.findByIdAndDelete.mockResolvedValue(null);
@@ -310,7 +310,7 @@ describe('Category Controller', () => {
 
         describe('When an error occurs that is not 404', () => {
             // Possible scenarios when id given is wrong format, issue with database
-            test('Then return status code 500', async () => {
+            it('should return status code 500', async () => {
                 req.params = { id: null };
                 error = new Error("An error has occurred.");
                 categoryModel.findByIdAndDelete.mockRejectedValue(error);
@@ -327,7 +327,7 @@ describe('Category Controller', () => {
         });
 
         describe('When a valid id is given and exists in the database', () => {
-            test('Then return status code 200', async () => {
+            it('should return status code 200', async () => {
                 req.params = { id: '12345' };
                 categoryModel.findByIdAndDelete.mockResolvedValue(req.params.id);
 
