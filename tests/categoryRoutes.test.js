@@ -1,3 +1,5 @@
+import express from "express";
+import request from "supertest";
 import router from "../routes/categoryRoutes.js";
 import { isAdmin, requireSignIn } from "../middlewares/authMiddleware.js";
 import {
@@ -7,76 +9,87 @@ import {
     singleCategoryController,
     updateCategoryController,
 } from "../controllers/categoryController.js";
-import { describe } from "node:test";
 
 // Mock dependencies
-jest.mock("../middlewares/authMiddleware.js", () => ({
-    requireSignIn: jest.fn((req, res, next) => next()),
-    isAdmin: jest.fn((req, res, next) => next()),
-}));
+jest.mock("../middlewares/authMiddleware.js");
+jest.mock("../controllers/categoryController.js");
 
-jest.mock("../controllers/categoryController.js", () => ({
-    categoryControlller: jest.fn(),
-    createCategoryController: jest.fn(),
-    deleteCategoryCOntroller: jest.fn(),
-    singleCategoryController: jest.fn(),
-    updateCategoryController: jest.fn(),
-}));
+const app = express();
+app.use(express.json()); // to parse JSON body
+app.use(router);
 
 describe("Category Routes", () => {
-    let mockRequest, mockResponse, nextFunction;
-
     beforeEach(() => {
-        // Define mockRequest here to ensure it's in scope
-        mockRequest = (body = {}, params = {}, query = {}) => ({
-            body,
-            params,
-            query,
-        });
-
-        mockResponse = () => {
-            const res = {};
-            res.status = jest.fn().mockReturnValue(res);
-            res.json = jest.fn().mockReturnValue(res);
-            res.send = jest.fn().mockReturnValue(res);
-            return res;
-        };
-        
-        nextFunction = jest.fn();
+        requireSignIn.mockImplementation((req, res, next) => next());
+        isAdmin.mockImplementation((req, res, next) => next());
     });
 
-    describe("When handling requests", () => {
-        describe("POST /create-category", () => {
-            test("should register POST route for /create-category with middlewares and controller", () => {
-                expect(router.post).toHaveBeenCalledWith(
-                    "/create-category",
-                    requireSignIn,
-                    isAdmin,
-                    createCategoryController
-                );
+    describe("Given POST /create-category", () => {
+        describe("When it is a valid request", () => {
+            test("Then return code 201", async () => {
+                createCategoryController.mockImplementation((req, res) => {
+                    res.status(201).json({ message: "Category created successfully" });
+                });
+
+                const response = await request(app)
+                    .post("/create-category")
+                    .send({ name: "Chair", slug: "chair" }); // send the required data for category creation
+
+                expect(response.status).toBe(201);
+                expect(response.body.message).toBe("Category created successfully");
+                expect(createCategoryController).toHaveBeenCalled(); // check that the controller was called
             });
+        });
 
-            test("should call the createCategoryController and not return status code 500 on valid request", async () => {
-                const req = mockRequest({ name: 'Chair', slug: 'chair' });
-                const res = mockResponse();
-
-                await router.post.mock.calls[0][3](req, res, nextFunction); // Call the controller
-
-                expect(res.status).not.toHaveBeenCalledWith(500);
-                expect(createCategoryController).toHaveBeenCalledWith(req, res, nextFunction); // Optional: Check if the controller was called
-            });
-
-            test("should return status code 500 if there are any errors", async () => {
+        describe("When there are any errors", () => {
+            test("Then it should not return status code 201", async () => {
                 createCategoryController.mockImplementation((req, res) => {
                     res.status(500).json({ message: "Error" });
                 });
 
-                const req = mockRequest({ name: 'Chair', slug: 'chair' });
-                const res = mockResponse();
+                const response = await request(app)
+                    .post("/create-category")
+                    .send({ name: "Chair", slug: "chair" });
 
-                await router.post.mock.calls[0][3](req, res, nextFunction); // Call the controller
+                expect(response.status).not.toBe(201);
+                expect(response.body.message).toBe("Error");
+                expect(createCategoryController).toHaveBeenCalled(); // check that the controller was called
+            });
+        });
+    });
 
-                expect(res.status).toHaveBeenCalledWith(500);
+    describe("Given PUT /update-category/:id", () => {
+        describe("When it is a valid request", () => {
+            test("Then return status code 200", async () => {
+                const categoryId = "123"; // replace with a mock ID
+                updateCategoryController.mockImplementation((req, res) => {
+                    res.status(200).json({ message: "Category Updated Successfully" });
+                });
+
+                const response = await request(app)
+                    .put(`/update-category/${categoryId}`)
+                    .send({ name: "Updated Chair", slug: "updated-chair" }); // send updated data
+
+                expect(response.status).toBe(200);
+                expect(response.body.message).toBe("Category Updated Successfully");
+                expect(updateCategoryController).toHaveBeenCalled(); // check that the controller was called
+            });
+        });
+
+        describe("When there are any errors", () => {
+            test("Then it should not return status code 200", async () => {
+                const categoryId = "123"; // replace with a mock ID
+                updateCategoryController.mockImplementation((req, res) => {
+                    res.status(500).json({ message: "Error while updating category" });
+                });
+
+                const response = await request(app)
+                    .put(`/update-category/${categoryId}`)
+                    .send({ name: "Updated Chair", slug: "updated-chair" }); // send updated data
+
+                expect(response.status).not.toBe(200);
+                expect(response.body.message).toBe("Error while updating category");
+                expect(updateCategoryController).toHaveBeenCalled(); // check that the controller was called
             });
         });
     });
