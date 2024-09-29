@@ -4,7 +4,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Categories from "./Categories";
 import useCategory from "../hooks/useCategory";
 import "@testing-library/jest-dom/extend-expect";
-import Layout from "../components/Layout";
 
 // Mock the dependencies
 jest.mock("../hooks/useCategory");
