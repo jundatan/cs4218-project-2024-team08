@@ -154,6 +154,52 @@ describe("Create Product Component", () => {
           "/dashboard/admin/products"
         );
       });
+
+      describe("If the product creation fails", () => {
+        it("Then it should show an error message", async () => {
+          axios.post.mockResolvedValue({
+            data: {
+              success: false,
+              message: "Product creation failed",
+            },
+          });
+          const { getByText, getByPlaceholderText } = render(
+            <MemoryRouter initialEntries={["/create-product"]}>
+              <Routes>
+                <Route path="/create-product" element={<CreateProduct />} />
+              </Routes>
+            </MemoryRouter>
+          );
+          await waitFor(() => {
+            expect(axios.get).toHaveBeenCalledWith(
+              "/api/v1/category/get-category"
+            );
+          });
+
+          fireEvent.change(getByPlaceholderText("write a name"), {
+            target: { value: "Product 1" },
+          });
+          fireEvent.change(getByPlaceholderText("write a description"), {
+            target: { value: "Product 1 description" },
+          });
+          fireEvent.change(getByPlaceholderText("write a Price"), {
+            target: { value: 1 },
+          });
+          fireEvent.change(getByPlaceholderText("write a quantity"), {
+            target: { value: 1 },
+          });
+          fireEvent.click(getByText("CREATE PRODUCT"));
+          await waitFor(() => {
+            expect(axios.post).toHaveBeenCalledWith(
+              "/api/v1/product/create-product",
+              expect.any(FormData)
+            );
+          });
+          await waitFor(() => {
+            expect(toast.error).toHaveBeenCalledWith("Product creation failed");
+          });
+        });
+      });
     });
   });
 });
