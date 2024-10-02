@@ -1,0 +1,53 @@
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import '@testing-library/jest-dom';
+import Contact from "./Contact";
+import Layout from "./../components/Layout";
+
+// Mocking the Layout component
+jest.mock("./../components/Layout", () => ({ children, title }) => (
+  <div>
+    <h1>{title}</h1>
+    {children}
+  </div>
+));
+
+describe("Contact Component", () => {
+  beforeEach(() => {
+    render(<Contact />);
+  });
+  
+  describe("When the Contact component is rendered", () => {
+    it("should render the Layout component with the correct title", () => {
+        expect(screen.getByText("Contact us")).toBeInTheDocument();
+      });
+    
+      it("should display the contact heading", () => {
+        expect(screen.getByRole("heading", { name: "CONTACT US" })).toBeInTheDocument();
+      });
+    
+      it("should display the contact description", () => {
+        expect(
+          screen.getByText(/For any query or info about product, feel free to call anytime/i)
+        ).toBeInTheDocument();
+      });
+    
+      it("should display the email address", () => {
+        expect(screen.getByText(/www.help@ecommerceapp.com/i)).toBeInTheDocument();
+      });
+    
+      it("should display the phone number", () => {
+        expect(screen.getByText(/012-3456789/i)).toBeInTheDocument();
+      });
+    
+      it("should display the toll-free number", () => {
+        expect(screen.getByText(/1800-0000-0000/i)).toBeInTheDocument();
+      });
+    
+      it("should display the contact image", () => {
+        const imgElement = screen.getByAltText("contactus");
+        expect(imgElement).toBeInTheDocument();
+        expect(imgElement).toHaveAttribute("src", "/images/contactus.jpeg");
+      });
+  });
+});
