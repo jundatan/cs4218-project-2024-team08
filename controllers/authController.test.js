@@ -1,4 +1,4 @@
-import { loginController, forgotPasswordController } from "./authController";
+import { registerController, loginController, forgotPasswordController } from "./authController";
 import userModel from "../models/userModel";
 import { comparePassword, hashPassword } from "../helpers/authHelper";
 import JWT from "jsonwebtoken";
@@ -7,6 +7,129 @@ import JWT from "jsonwebtoken";
 jest.mock("../models/userModel");
 jest.mock("../helpers/authHelper");
 jest.mock("jsonwebtoken");
+
+describe("registerController", () => {
+  let req, res;
+
+  beforeEach(() => {
+    req = {
+      body: {
+        name: "John Doe",
+        email: "john@example.com",
+        password: "password123",
+        phone: "1234567890",
+        address: "123 Street",
+        answer: "securityAnswer",
+      },
+    };
+    res = {
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn(),
+    };
+  });
+
+  it("should return an error if name is missing", async () => {
+    req.body.name = ""; // Simulate missing name
+
+    await registerController(req, res);
+
+    expect(res.send).toHaveBeenCalledWith({ error: "Name is Required" });
+  });
+
+  it("should return an error if email is missing", async () => {
+    req.body.email = ""; // Simulate missing email
+
+    await registerController(req, res);
+
+    expect(res.send).toHaveBeenCalledWith({ message: "Email is Required" });
+  });
+
+  it("should return an error if password is missing", async () => {
+    req.body.password = ""; // Simulate missing password
+
+    await registerController(req, res);
+
+    expect(res.send).toHaveBeenCalledWith({ message: "Password is Required" });
+  });
+
+  it("should return an error if phone is missing", async () => {
+    req.body.phone = ""; // Simulate missing phone
+
+    await registerController(req, res);
+
+    expect(res.send).toHaveBeenCalledWith({ message: "Phone no is Required" });
+  });
+
+  it("should return an error if address is missing", async () => {
+    req.body.address = ""; // Simulate missing address
+
+    await registerController(req, res);
+
+    expect(res.send).toHaveBeenCalledWith({ message: "Address is Required" });
+  });
+
+  it("should return an error if answer is missing", async () => {
+    req.body.answer = ""; // Simulate missing security answer
+
+    await registerController(req, res);
+
+    expect(res.send).toHaveBeenCalledWith({ message: "Answer is Required" });
+  });
+
+  it("should return an error if user already exists", async () => {
+    userModel.findOne.mockResolvedValue({ email: "john@example.com" }); // Simulate existing user
+
+    await registerController(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.send).toHaveBeenCalledWith({
+      success: false,
+      message: "Already Register please login",
+    });
+  });
+
+  it("should register a new user if all fields are valid and user does not exist", async () => {
+    userModel.findOne.mockResolvedValue(null); // Simulate user not found
+    hashPassword.mockResolvedValue("hashedPassword"); // Simulate password hashing
+    userModel.mockImplementation(() => ({
+      save: jest.fn().mockResolvedValue({
+        name: "John Doe",
+        email: "john@example.com",
+        phone: "1234567890",
+        address: "123 Street",
+        answer: "securityAnswer",
+      }),
+    })); // Simulate successful user save
+
+    await registerController(req, res);
+
+    expect(hashPassword).toHaveBeenCalledWith("password123");
+    expect(res.status).toHaveBeenCalledWith(201);
+    expect(res.send).toHaveBeenCalledWith({
+      success: true,
+      message: "User Register Successfully",
+      user: expect.objectContaining({
+        name: "John Doe",
+        email: "john@example.com",
+        phone: "1234567890",
+        address: "123 Street",
+      }),
+    });
+  });
+
+  it("should return 500 if there is an internal server error", async () => {
+    userModel.findOne.mockRejectedValue(new Error("Database error")); // Simulate a database error
+
+    await registerController(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.send).toHaveBeenCalledWith({
+      success: false,
+      message: "Errro in Registeration",
+      error: expect.any(Error),
+    });
+  });
+});
 
 describe("loginController", () => {
   let req, res;
