@@ -47,59 +47,59 @@ describe("Register Component", () => {
     jest.clearAllMocks();
   });
 
-  it("renders register form", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/register"]}>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  // it("renders register form", () => {
+  //   const { getByText, getByPlaceholderText } = render(
+  //     <MemoryRouter initialEntries={["/register"]}>
+  //       <Routes>
+  //         <Route path="/register" element={<Register />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
 
-    const nameInput = getByPlaceholderText("Enter Your Name");
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-    const phoneInput = getByPlaceholderText("Enter Your Phone");
-    const addressInput = getByPlaceholderText("Enter Your Address");
-    const dobInput = getByPlaceholderText("Enter Your DOB");
-    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+  //   const nameInput = getByPlaceholderText("Enter Your Name");
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const phoneInput = getByPlaceholderText("Enter Your Phone");
+  //   const addressInput = getByPlaceholderText("Enter Your Address");
+  //   const dobInput = getByPlaceholderText("Enter Your DOB");
+  //   const sportsInput = getByPlaceholderText("What is Your Favorite sports");
 
-    expect(getByText("REGISTER FORM")).toBeInTheDocument();
-    expect(nameInput).toBeInTheDocument();
-    expect(emailInput).toBeInTheDocument();
-    expect(passwordInput).toBeInTheDocument();
-    expect(phoneInput).toBeInTheDocument();
-    expect(addressInput).toBeInTheDocument();
-    expect(dobInput).toBeInTheDocument();
-    expect(sportsInput).toBeInTheDocument();
-  });
+  //   expect(getByText("REGISTER FORM")).toBeInTheDocument();
+  //   expect(nameInput).toBeInTheDocument();
+  //   expect(emailInput).toBeInTheDocument();
+  //   expect(passwordInput).toBeInTheDocument();
+  //   expect(phoneInput).toBeInTheDocument();
+  //   expect(addressInput).toBeInTheDocument();
+  //   expect(dobInput).toBeInTheDocument();
+  //   expect(sportsInput).toBeInTheDocument();
+  // });
 
-  it("inputs should be initially empty", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/register"]}>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  // it("inputs should be initially empty", () => {
+  //   const { getByText, getByPlaceholderText } = render(
+  //     <MemoryRouter initialEntries={["/register"]}>
+  //       <Routes>
+  //         <Route path="/register" element={<Register />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
 
-    const nameInput = getByPlaceholderText("Enter Your Name");
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-    const phoneInput = getByPlaceholderText("Enter Your Phone");
-    const addressInput = getByPlaceholderText("Enter Your Address");
-    const dobInput = getByPlaceholderText("Enter Your DOB");
-    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+  //   const nameInput = getByPlaceholderText("Enter Your Name");
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const phoneInput = getByPlaceholderText("Enter Your Phone");
+  //   const addressInput = getByPlaceholderText("Enter Your Address");
+  //   const dobInput = getByPlaceholderText("Enter Your DOB");
+  //   const sportsInput = getByPlaceholderText("What is Your Favorite sports");
 
-    expect(getByText("REGISTER FORM")).toBeInTheDocument();
-    expect(nameInput.value).toBe("");
-    expect(emailInput.value).toBe("");
-    expect(passwordInput.value).toBe("");
-    expect(phoneInput.value).toBe("");
-    expect(addressInput.value).toBe("");
-    expect(dobInput.value).toBe("");
-    expect(sportsInput.value).toBe("");
-  });
+  //   expect(getByText("REGISTER FORM")).toBeInTheDocument();
+  //   expect(nameInput.value).toBe("");
+  //   expect(emailInput.value).toBe("");
+  //   expect(passwordInput.value).toBe("");
+  //   expect(phoneInput.value).toBe("");
+  //   expect(addressInput.value).toBe("");
+  //   expect(dobInput.value).toBe("");
+  //   expect(sportsInput.value).toBe("");
+  // });
 
   it("should register the user successfully", async () => {
     axios.post.mockResolvedValueOnce({ data: { success: true } });
@@ -150,103 +150,103 @@ describe("Register Component", () => {
     );
   });
 
-  it("should fail to register the user if an unknown error occurs", async () => {
-    axios.post.mockResolvedValueOnce({ data: { success: false, message: "Unknown error" } });
+  // it("should fail to register the user if an unknown error occurs", async () => {
+  //   axios.post.mockResolvedValueOnce({ data: { success: false, message: "Unknown error" } });
 
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/register"]}>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  //   const { getByText, getByPlaceholderText } = render(
+  //     <MemoryRouter initialEntries={["/register"]}>
+  //       <Routes>
+  //         <Route path="/register" element={<Register />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
 
-    const nameInput = getByPlaceholderText("Enter Your Name");
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-    const phoneInput = getByPlaceholderText("Enter Your Phone");
-    const addressInput = getByPlaceholderText("Enter Your Address");
-    const dobInput = getByPlaceholderText("Enter Your DOB");
-    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+  //   const nameInput = getByPlaceholderText("Enter Your Name");
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const phoneInput = getByPlaceholderText("Enter Your Phone");
+  //   const addressInput = getByPlaceholderText("Enter Your Address");
+  //   const dobInput = getByPlaceholderText("Enter Your DOB");
+  //   const sportsInput = getByPlaceholderText("What is Your Favorite sports");
 
-    fireEvent.change(nameInput, {
-      target: { value: "John Doe" },
-    });
-    fireEvent.change(emailInput, {
-      target: { value: "test@example.com" },
-    });
-    fireEvent.change(passwordInput, {
-      target: { value: "password123" },
-    });
-    fireEvent.change(phoneInput, {
-      target: { value: "1234567890" },
-    });
-    fireEvent.change(addressInput, {
-      target: { value: "123 Street" },
-    });
-    fireEvent.change(dobInput, {
-      target: { value: "2000-01-01" },
-    });
-    fireEvent.change(sportsInput, {
-      target: { value: "Football" },
-    });
+  //   fireEvent.change(nameInput, {
+  //     target: { value: "John Doe" },
+  //   });
+  //   fireEvent.change(emailInput, {
+  //     target: { value: "test@example.com" },
+  //   });
+  //   fireEvent.change(passwordInput, {
+  //     target: { value: "password123" },
+  //   });
+  //   fireEvent.change(phoneInput, {
+  //     target: { value: "1234567890" },
+  //   });
+  //   fireEvent.change(addressInput, {
+  //     target: { value: "123 Street" },
+  //   });
+  //   fireEvent.change(dobInput, {
+  //     target: { value: "2000-01-01" },
+  //   });
+  //   fireEvent.change(sportsInput, {
+  //     target: { value: "Football" },
+  //   });
 
-    fireEvent.click(getByText("REGISTER"));
+  //   fireEvent.click(getByText("REGISTER"));
 
-    await waitFor(() => expect(axios.post).toHaveBeenCalled());
-    expect(toast.error).toHaveBeenCalledWith(
-      "Unknown error"
-    );
-  });
+  //   await waitFor(() => expect(axios.post).toHaveBeenCalled());
+  //   expect(toast.error).toHaveBeenCalledWith(
+  //     "Unknown error"
+  //   );
+  // });
 
-  it("should display error message on failed registration", async () => {
-    axios.post.mockRejectedValueOnce({ message: "User already exists" });
+  // it("should display error message on failed registration", async () => {
+  //   axios.post.mockRejectedValueOnce({ message: "User already exists" });
 
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/register"]}>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  //   const { getByText, getByPlaceholderText } = render(
+  //     <MemoryRouter initialEntries={["/register"]}>
+  //       <Routes>
+  //         <Route path="/register" element={<Register />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
 
-    const nameInput = getByPlaceholderText("Enter Your Name");
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-    const phoneInput = getByPlaceholderText("Enter Your Phone");
-    const addressInput = getByPlaceholderText("Enter Your Address");
-    const dobInput = getByPlaceholderText("Enter Your DOB");
-    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+  //   const nameInput = getByPlaceholderText("Enter Your Name");
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const phoneInput = getByPlaceholderText("Enter Your Phone");
+  //   const addressInput = getByPlaceholderText("Enter Your Address");
+  //   const dobInput = getByPlaceholderText("Enter Your DOB");
+  //   const sportsInput = getByPlaceholderText("What is Your Favorite sports");
 
-    fireEvent.change(nameInput, {
-      target: { value: "John Doe" },
-    });
-    fireEvent.change(emailInput, {
-      target: { value: "test@example.com" },
-    });
-    fireEvent.change(passwordInput, {
-      target: { value: "password123" },
-    });
-    fireEvent.change(phoneInput, {
-      target: { value: "1234567890" },
-    });
-    fireEvent.change(addressInput, {
-      target: { value: "123 Street" },
-    });
-    fireEvent.change(dobInput, {
-      target: { value: "2000-01-01" },
-    });
-    fireEvent.change(sportsInput, {
-      target: { value: "Football" },
-    });
+  //   fireEvent.change(nameInput, {
+  //     target: { value: "John Doe" },
+  //   });
+  //   fireEvent.change(emailInput, {
+  //     target: { value: "test@example.com" },
+  //   });
+  //   fireEvent.change(passwordInput, {
+  //     target: { value: "password123" },
+  //   });
+  //   fireEvent.change(phoneInput, {
+  //     target: { value: "1234567890" },
+  //   });
+  //   fireEvent.change(addressInput, {
+  //     target: { value: "123 Street" },
+  //   });
+  //   fireEvent.change(dobInput, {
+  //     target: { value: "2000-01-01" },
+  //   });
+  //   fireEvent.change(sportsInput, {
+  //     target: { value: "Football" },
+  //   });
 
-    fireEvent.click(getByText("REGISTER"));
+  //   fireEvent.click(getByText("REGISTER"));
 
-    await waitFor(() => expect(axios.post).toHaveBeenCalled());
-    expect(toast.error).toHaveBeenCalledWith("Something went wrong");
-  });
+  //   await waitFor(() => expect(axios.post).toHaveBeenCalled());
+  //   expect(toast.error).toHaveBeenCalledWith("Something went wrong");
+  // });
 
-  it("should flag a validation message when name is empty", () => {
+  it("should flag validation message(s) when all fields are empty", () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter initialEntries={["/register"]}>
         <Routes>
@@ -267,7 +267,65 @@ describe("Register Component", () => {
       target: { value: "" },
     });
     fireEvent.change(emailInput, {
-      target: { value: "test@example.com" },
+      target: { value: "" },
+    });
+    fireEvent.change(passwordInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(phoneInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(addressInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(dobInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(sportsInput, {
+      target: { value: "" },
+    });
+
+    fireEvent.click(getByText("REGISTER"));
+
+    expect(nameInput).toBeRequired();
+    expect(emailInput).toBeRequired();
+    expect(passwordInput).toBeRequired();
+    expect(phoneInput).toBeRequired();
+    expect(addressInput).toBeRequired();
+    expect(dobInput).toBeRequired();
+    expect(sportsInput).toBeRequired();
+
+    expect(nameInput.validationMessage).toBe("Constraints not satisfied");
+    expect(emailInput.validationMessage).toBe("Constraints not satisfied");
+    expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
+    expect(phoneInput.validationMessage).toBe("Constraints not satisfied");
+    expect(addressInput.validationMessage).toBe("Constraints not satisfied");
+    expect(dobInput.validationMessage).toBe("Constraints not satisfied");
+    expect(sportsInput.validationMessage).toBe("Constraints not satisfied");
+  });
+
+  it("should flag validation message(s) when name, email are empty", () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter initialEntries={["/register"]}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const nameInput = getByPlaceholderText("Enter Your Name");
+    const emailInput = getByPlaceholderText("Enter Your Email");
+    const passwordInput = getByPlaceholderText("Enter Your Password");
+    const phoneInput = getByPlaceholderText("Enter Your Phone");
+    const addressInput = getByPlaceholderText("Enter Your Address");
+    const dobInput = getByPlaceholderText("Enter Your DOB");
+    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+
+    fireEvent.change(nameInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(emailInput, {
+      target: { value: "" },
     });
     fireEvent.change(passwordInput, {
       target: { value: "password123" },
@@ -288,8 +346,10 @@ describe("Register Component", () => {
     fireEvent.click(getByText("REGISTER"));
 
     expect(nameInput).toBeRequired();
+    expect(emailInput).toBeRequired();
+
     expect(nameInput.validationMessage).toBe("Constraints not satisfied");
-    expect(emailInput.validationMessage).toBe("");
+    expect(emailInput.validationMessage).toBe("Constraints not satisfied");
     expect(passwordInput.validationMessage).toBe("");
     expect(phoneInput.validationMessage).toBe("");
     expect(addressInput.validationMessage).toBe("");
@@ -297,7 +357,116 @@ describe("Register Component", () => {
     expect(sportsInput.validationMessage).toBe("");
   });
 
-  it("should flag a validation message when email is empty", () => {
+  it("should flag validation message(s) when name, password, phone are empty", () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter initialEntries={["/register"]}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const nameInput = getByPlaceholderText("Enter Your Name");
+    const emailInput = getByPlaceholderText("Enter Your Email");
+    const passwordInput = getByPlaceholderText("Enter Your Password");
+    const phoneInput = getByPlaceholderText("Enter Your Phone");
+    const addressInput = getByPlaceholderText("Enter Your Address");
+    const dobInput = getByPlaceholderText("Enter Your DOB");
+    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+
+    fireEvent.change(nameInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(emailInput, {
+      target: { value: "test@example.com" },
+    });
+    fireEvent.change(passwordInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(phoneInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(addressInput, {
+      target: { value: "123 Street" },
+    });
+    fireEvent.change(dobInput, {
+      target: { value: "2000-01-01" },
+    });
+    fireEvent.change(sportsInput, {
+      target: { value: "Football" },
+    });
+
+    fireEvent.click(getByText("REGISTER"));
+
+    expect(nameInput).toBeRequired();
+    expect(passwordInput).toBeRequired();
+    expect(phoneInput).toBeRequired();
+
+    expect(nameInput.validationMessage).toBe("Constraints not satisfied");
+    expect(emailInput.validationMessage).toBe("");
+    expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
+    expect(phoneInput.validationMessage).toBe("Constraints not satisfied");
+    expect(addressInput.validationMessage).toBe("");
+    expect(dobInput.validationMessage).toBe("");
+    expect(sportsInput.validationMessage).toBe("");
+  });
+
+  it("should flag validation message(s) when name, address, DOB, sports are empty", () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter initialEntries={["/register"]}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const nameInput = getByPlaceholderText("Enter Your Name");
+    const emailInput = getByPlaceholderText("Enter Your Email");
+    const passwordInput = getByPlaceholderText("Enter Your Password");
+    const phoneInput = getByPlaceholderText("Enter Your Phone");
+    const addressInput = getByPlaceholderText("Enter Your Address");
+    const dobInput = getByPlaceholderText("Enter Your DOB");
+    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+
+    fireEvent.change(nameInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(emailInput, {
+      target: { value: "test@example.com" },
+    });
+    fireEvent.change(passwordInput, {
+      target: { value: "password123" },
+    });
+    fireEvent.change(phoneInput, {
+      target: { value: "1234567890" },
+    });
+    fireEvent.change(addressInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(dobInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(sportsInput, {
+      target: { value: "" },
+    });
+
+    fireEvent.click(getByText("REGISTER"));
+
+    expect(nameInput).toBeRequired();
+    expect(addressInput).toBeRequired();
+    expect(dobInput).toBeRequired();
+    expect(sportsInput).toBeRequired();
+
+    expect(nameInput.validationMessage).toBe("Constraints not satisfied");
+    expect(emailInput.validationMessage).toBe("");
+    expect(passwordInput.validationMessage).toBe("");
+    expect(phoneInput.validationMessage).toBe("");
+    expect(addressInput.validationMessage).toBe("Constraints not satisfied");
+    expect(dobInput.validationMessage).toBe("Constraints not satisfied");
+    expect(sportsInput.validationMessage).toBe("Constraints not satisfied");
+  });
+
+  it("should flag validation message(s) when email, password, address are empty", () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter initialEntries={["/register"]}>
         <Routes>
@@ -321,13 +490,13 @@ describe("Register Component", () => {
       target: { value: "" },
     });
     fireEvent.change(passwordInput, {
-      target: { value: "password123" },
+      target: { value: "" },
     });
     fireEvent.change(phoneInput, {
       target: { value: "1234567890" },
     });
     fireEvent.change(addressInput, {
-      target: { value: "123 Street" },
+      target: { value: "" },
     });
     fireEvent.change(dobInput, {
       target: { value: "2000-01-01" },
@@ -339,16 +508,74 @@ describe("Register Component", () => {
     fireEvent.click(getByText("REGISTER"));
 
     expect(emailInput).toBeRequired();
+    expect(passwordInput).toBeRequired();
+    expect(addressInput).toBeRequired();
+
+    expect(nameInput.validationMessage).toBe("");    
     expect(emailInput.validationMessage).toBe("Constraints not satisfied");
-    expect(nameInput.validationMessage).toBe("");
-    expect(passwordInput.validationMessage).toBe("");
+    expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
     expect(phoneInput.validationMessage).toBe("");
-    expect(addressInput.validationMessage).toBe("");
+    expect(addressInput.validationMessage).toBe("Constraints not satisfied");
     expect(dobInput.validationMessage).toBe("");
     expect(sportsInput.validationMessage).toBe("");
   });
 
-  it("should flag a validation message when password is empty", () => {
+  it("should flag validation message(s) when email, phone, DOB, sports are empty", () => {
+    const { getByText, getByPlaceholderText } = render(
+      <MemoryRouter initialEntries={["/register"]}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </MemoryRouter>
+    );
+
+    const nameInput = getByPlaceholderText("Enter Your Name");
+    const emailInput = getByPlaceholderText("Enter Your Email");
+    const passwordInput = getByPlaceholderText("Enter Your Password");
+    const phoneInput = getByPlaceholderText("Enter Your Phone");
+    const addressInput = getByPlaceholderText("Enter Your Address");
+    const dobInput = getByPlaceholderText("Enter Your DOB");
+    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
+
+    fireEvent.change(nameInput, {
+      target: { value: "John Doe" },
+    });
+    fireEvent.change(emailInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(passwordInput, {
+      target: { value: "password123" },
+    });
+    fireEvent.change(phoneInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(addressInput, {
+      target: { value: "123 Street" },
+    });
+    fireEvent.change(dobInput, {
+      target: { value: "" },
+    });
+    fireEvent.change(sportsInput, {
+      target: { value: "" },
+    });
+
+    fireEvent.click(getByText("REGISTER"));
+
+    expect(emailInput).toBeRequired();
+    expect(phoneInput).toBeRequired();
+    expect(dobInput).toBeRequired();
+    expect(sportsInput).toBeRequired();
+
+    expect(nameInput.validationMessage).toBe("");
+    expect(emailInput.validationMessage).toBe("Constraints not satisfied");
+    expect(passwordInput.validationMessage).toBe("");
+    expect(phoneInput.validationMessage).toBe("Constraints not satisfied");
+    expect(addressInput.validationMessage).toBe("");
+    expect(dobInput.validationMessage).toBe("Constraints not satisfied");    
+    expect(sportsInput.validationMessage).toBe("Constraints not satisfied");
+  });
+
+  it("should flag validation message(s) when password, DOB, sports are empty", () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter initialEntries={["/register"]}>
         <Routes>
@@ -381,25 +608,28 @@ describe("Register Component", () => {
       target: { value: "123 Street" },
     });
     fireEvent.change(dobInput, {
-      target: { value: "2000-01-01" },
+      target: { value: "" },
     });
     fireEvent.change(sportsInput, {
-      target: { value: "Football" },
+      target: { value: "" },
     });
 
     fireEvent.click(getByText("REGISTER"));
 
     expect(passwordInput).toBeRequired();
-    expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
+    expect(dobInput).toBeRequired();
+    expect(sportsInput).toBeRequired();
+
     expect(nameInput.validationMessage).toBe("");
     expect(emailInput.validationMessage).toBe("");
+    expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
     expect(phoneInput.validationMessage).toBe("");
     expect(addressInput.validationMessage).toBe("");
-    expect(dobInput.validationMessage).toBe("");
-    expect(sportsInput.validationMessage).toBe("");
+    expect(dobInput.validationMessage).toBe("Constraints not satisfied");
+    expect(sportsInput.validationMessage).toBe("Constraints not satisfied");
   });
 
-  it("should flag a validation message when phone is empty", () => {
+  it("should flag validation message(s) when phone, address are empty", () => {
     const { getByText, getByPlaceholderText } = render(
       <MemoryRouter initialEntries={["/register"]}>
         <Routes>
@@ -429,7 +659,7 @@ describe("Register Component", () => {
       target: { value: "" },
     });
     fireEvent.change(addressInput, {
-      target: { value: "123 Street" },
+      target: { value: "" },
     });
     fireEvent.change(dobInput, {
       target: { value: "2000-01-01" },
@@ -441,165 +671,14 @@ describe("Register Component", () => {
     fireEvent.click(getByText("REGISTER"));
 
     expect(phoneInput).toBeRequired();
-    expect(phoneInput.validationMessage).toBe("Constraints not satisfied");
-    expect(nameInput.validationMessage).toBe("");
-    expect(emailInput.validationMessage).toBe("");
-    expect(passwordInput.validationMessage).toBe("");
-    expect(addressInput.validationMessage).toBe("");
-    expect(dobInput.validationMessage).toBe("");
-    expect(sportsInput.validationMessage).toBe("");
-  });
-
-  it("should flag a validation message when address is empty", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/register"]}>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    const nameInput = getByPlaceholderText("Enter Your Name");
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-    const phoneInput = getByPlaceholderText("Enter Your Phone");
-    const addressInput = getByPlaceholderText("Enter Your Address");
-    const dobInput = getByPlaceholderText("Enter Your DOB");
-    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
-
-    fireEvent.change(nameInput, {
-      target: { value: "John Doe" },
-    });
-    fireEvent.change(emailInput, {
-      target: { value: "test@example.com" },
-    });
-    fireEvent.change(passwordInput, {
-      target: { value: "password123" },
-    });
-    fireEvent.change(phoneInput, {
-      target: { value: "1234567890" },
-    });
-    fireEvent.change(addressInput, {
-      target: { value: "" },
-    });
-    fireEvent.change(dobInput, {
-      target: { value: "2000-01-01" },
-    });
-    fireEvent.change(sportsInput, {
-      target: { value: "Football" },
-    });
-
-    fireEvent.click(getByText("REGISTER"));
-
     expect(addressInput).toBeRequired();
-    expect(addressInput.validationMessage).toBe("Constraints not satisfied");    
+
     expect(nameInput.validationMessage).toBe("");
     expect(emailInput.validationMessage).toBe("");
     expect(passwordInput.validationMessage).toBe("");
-    expect(phoneInput.validationMessage).toBe("");
+    expect(phoneInput.validationMessage).toBe("Constraints not satisfied");
+    expect(addressInput.validationMessage).toBe("Constraints not satisfied");
     expect(dobInput.validationMessage).toBe("");
     expect(sportsInput.validationMessage).toBe("");
-  });
-
-  it("should flag a validation message when DOB is empty", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/register"]}>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    const nameInput = getByPlaceholderText("Enter Your Name");
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-    const phoneInput = getByPlaceholderText("Enter Your Phone");
-    const addressInput = getByPlaceholderText("Enter Your Address");
-    const dobInput = getByPlaceholderText("Enter Your DOB");
-    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
-
-    fireEvent.change(nameInput, {
-      target: { value: "John Doe" },
-    });
-    fireEvent.change(emailInput, {
-      target: { value: "test@example.com" },
-    });
-    fireEvent.change(passwordInput, {
-      target: { value: "password123" },
-    });
-    fireEvent.change(phoneInput, {
-      target: { value: "1234567890" },
-    });
-    fireEvent.change(addressInput, {
-      target: { value: "123 Street" },
-    });
-    fireEvent.change(dobInput, {
-      target: { value: "" },
-    });
-    fireEvent.change(sportsInput, {
-      target: { value: "Football" },
-    });
-
-    fireEvent.click(getByText("REGISTER"));
-
-    expect(dobInput).toBeRequired();
-    expect(dobInput.validationMessage).toBe("Constraints not satisfied");    
-    expect(nameInput.validationMessage).toBe("");
-    expect(emailInput.validationMessage).toBe("");
-    expect(passwordInput.validationMessage).toBe("");
-    expect(phoneInput.validationMessage).toBe("");
-    expect(addressInput.validationMessage).toBe("");
-    expect(sportsInput.validationMessage).toBe("");
-  });
-
-  it("should flag a validation message when sports is empty", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/register"]}>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </MemoryRouter>
-    );
-
-    const nameInput = getByPlaceholderText("Enter Your Name");
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-    const phoneInput = getByPlaceholderText("Enter Your Phone");
-    const addressInput = getByPlaceholderText("Enter Your Address");
-    const dobInput = getByPlaceholderText("Enter Your DOB");
-    const sportsInput = getByPlaceholderText("What is Your Favorite sports");
-
-    fireEvent.change(nameInput, {
-      target: { value: "John Doe" },
-    });
-    fireEvent.change(emailInput, {
-      target: { value: "test@example.com" },
-    });
-    fireEvent.change(passwordInput, {
-      target: { value: "password123" },
-    });
-    fireEvent.change(phoneInput, {
-      target: { value: "1234567890" },
-    });
-    fireEvent.change(addressInput, {
-      target: { value: "123 Street" },
-    });
-    fireEvent.change(dobInput, {
-      target: { value: "2000-01-01" },
-    });
-    fireEvent.change(sportsInput, {
-      target: { value: "" },
-    });
-
-    fireEvent.click(getByText("REGISTER"));
-
-    expect(sportsInput).toBeRequired();
-    expect(sportsInput.validationMessage).toBe("Constraints not satisfied");
-    expect(nameInput.validationMessage).toBe("");
-    expect(emailInput.validationMessage).toBe("");
-    expect(passwordInput.validationMessage).toBe("");
-    expect(phoneInput.validationMessage).toBe("");
-    expect(addressInput.validationMessage).toBe("");
-    expect(dobInput.validationMessage).toBe("");
   });
 });

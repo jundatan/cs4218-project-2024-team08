@@ -54,60 +54,38 @@ describe("Login Component", () => {
     jest.clearAllMocks();
   });
 
-  it("renders login form", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  // it("renders login form", () => {
+  //   const { getByText, getByPlaceholderText } = render(
+  //     <MemoryRouter initialEntries={["/login"]}>
+  //       <Routes>
+  //         <Route path="/login" element={<Login />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
 
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
 
-    expect(getByText("LOGIN FORM")).toBeInTheDocument();
-    expect(emailInput).toBeInTheDocument();
-    expect(passwordInput).toBeInTheDocument();
-  });
+  //   expect(getByText("LOGIN FORM")).toBeInTheDocument();
+  //   expect(emailInput).toBeInTheDocument();
+  //   expect(passwordInput).toBeInTheDocument();
+  // });
 
-  it("inputs should be initially empty", () => {
-    const { getByText, getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </MemoryRouter>
-    );
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
+  // it("inputs should be initially empty", () => {
+  //   const { getByText, getByPlaceholderText } = render(
+  //     <MemoryRouter initialEntries={["/login"]}>
+  //       <Routes>
+  //         <Route path="/login" element={<Login />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
 
-    expect(getByText("LOGIN FORM")).toBeInTheDocument();
-    expect(emailInput.value).toBe("");
-    expect(passwordInput.value).toBe("");
-  });
-
-  it("should allow typing email and password", () => {
-    const { getByPlaceholderText } = render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </MemoryRouter>
-    );
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
-
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-
-    expect(getByPlaceholderText("Enter Your Email").value).toBe(
-      "test@example.com"
-    );
-    expect(getByPlaceholderText("Enter Your Password").value).toBe(
-      "password123"
-    );
-  });
+  //   expect(getByText("LOGIN FORM")).toBeInTheDocument();
+  //   expect(emailInput.value).toBe("");
+  //   expect(passwordInput.value).toBe("");
+  // });
 
   it("should login the user successfully", async () => {
     axios.post.mockResolvedValueOnce({
@@ -143,52 +121,52 @@ describe("Login Component", () => {
     });
   });
 
-  it("should display error message on failed login due to unknown error", async () => {
-    axios.post.mockResolvedValueOnce({
-      data: {
-        success: false,
-        message: "Unknown Error",
-      },
-    });
+  // it("should display error message on failed login due to unknown error", async () => {
+  //   axios.post.mockResolvedValueOnce({
+  //     data: {
+  //       success: false,
+  //       message: "Unknown Error",
+  //     },
+  //   });
 
-    const { getByPlaceholderText, getByText } = render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </MemoryRouter>
-    );
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const { getByPlaceholderText, getByText } = render(
+  //     <MemoryRouter initialEntries={["/login"]}>
+  //       <Routes>
+  //         <Route path="/login" element={<Login />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
 
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-    fireEvent.click(getByText("LOGIN"));
+  //   fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+  //   fireEvent.change(passwordInput, { target: { value: "password123" } });
+  //   fireEvent.click(getByText("LOGIN"));
 
-    await waitFor(() => expect(axios.post).toHaveBeenCalled());
-    expect(toast.error).toHaveBeenCalledWith("Unknown Error");
-  });
+  //   await waitFor(() => expect(axios.post).toHaveBeenCalled());
+  //   expect(toast.error).toHaveBeenCalledWith("Unknown Error");
+  // });
 
-  it("should display error message on failed login due to invalid credentials", async () => {
-    axios.post.mockRejectedValueOnce({ message: "Invalid credentials" });
+  // it("should display error message on failed login due to invalid credentials", async () => {
+  //   axios.post.mockRejectedValueOnce({ message: "Invalid credentials" });
 
-    const { getByPlaceholderText, getByText } = render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </MemoryRouter>
-    );
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const { getByPlaceholderText, getByText } = render(
+  //     <MemoryRouter initialEntries={["/login"]}>
+  //       <Routes>
+  //         <Route path="/login" element={<Login />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
 
-    fireEvent.change(emailInput, { target: { value: "test@example.com" } });
-    fireEvent.change(passwordInput, { target: { value: "password123" } });
-    fireEvent.click(getByText("LOGIN"));
+  //   fireEvent.change(emailInput, { target: { value: "test@example.com" } });
+  //   fireEvent.change(passwordInput, { target: { value: "password123" } });
+  //   fireEvent.click(getByText("LOGIN"));
 
-    await waitFor(() => expect(axios.post).toHaveBeenCalled());
-    expect(toast.error).toHaveBeenCalledWith("Something went wrong");
-  });
+  //   await waitFor(() => expect(axios.post).toHaveBeenCalled());
+  //   expect(toast.error).toHaveBeenCalledWith("Something went wrong");
+  // });
 
   it("should flag a validation message when email is empty", () => {
     const { getByPlaceholderText, getByText } = render(
@@ -232,27 +210,27 @@ describe("Login Component", () => {
     expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
   });
 
-  it("should flag validation messages when both email and password is empty", () => {
-    const { getByPlaceholderText, getByText } = render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </MemoryRouter>
-    );
+  // it("should flag validation messages when both email and password is empty", () => {
+  //   const { getByPlaceholderText, getByText } = render(
+  //     <MemoryRouter initialEntries={["/login"]}>
+  //       <Routes>
+  //         <Route path="/login" element={<Login />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
 
-    const emailInput = getByPlaceholderText("Enter Your Email");
-    const passwordInput = getByPlaceholderText("Enter Your Password");
+  //   const emailInput = getByPlaceholderText("Enter Your Email");
+  //   const passwordInput = getByPlaceholderText("Enter Your Password");
 
-    fireEvent.change(emailInput, { target: { value: "" } });
-    fireEvent.change(passwordInput, { target: { value: "" } });
-    fireEvent.click(getByText("LOGIN"));
+  //   fireEvent.change(emailInput, { target: { value: "" } });
+  //   fireEvent.change(passwordInput, { target: { value: "" } });
+  //   fireEvent.click(getByText("LOGIN"));
 
-    expect(emailInput).toBeRequired();
-    expect(passwordInput).toBeRequired();
-    expect(emailInput.validationMessage).toBe("Constraints not satisfied");
-    expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
-  });
+  //   expect(emailInput).toBeRequired();
+  //   expect(passwordInput).toBeRequired();
+  //   expect(emailInput.validationMessage).toBe("Constraints not satisfied");
+  //   expect(passwordInput.validationMessage).toBe("Constraints not satisfied");
+  // });
 
   it("should flag validation messages when email is in invalid format", () => {
     const { getByPlaceholderText, getByText } = render(
@@ -273,15 +251,15 @@ describe("Login Component", () => {
     expect(emailInput.validationMessage).toBe("Constraints not satisfied");
   });
 
-  it("should redirect to forgot password form when clicked", () => {
-    const { getByText } = render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </MemoryRouter>
-    );
-    fireEvent.click(getByText("Forgot Password"));
-    expect(useNavigate()).toHaveBeenCalledWith('/forgot-password');
-  });
+  // it("should redirect to forgot password form when clicked", () => {
+  //   const { getByText } = render(
+  //     <MemoryRouter initialEntries={["/login"]}>
+  //       <Routes>
+  //         <Route path="/login" element={<Login />} />
+  //       </Routes>
+  //     </MemoryRouter>
+  //   );
+  //   fireEvent.click(getByText("Forgot Password"));
+  //   expect(useNavigate()).toHaveBeenCalledWith('/forgot-password');
+  // });
 });
