@@ -165,6 +165,39 @@ describe("UpdateProduct component", () => {
           );
         });
       });
+
+      describe("When the form is submitted with empty fields", () => {
+        it("should show error message if form is submitted with empty fields", async () => {
+          axios.put.mockResolvedValue({
+            data: {
+              success: false,
+              message: "Product update failed",
+            },
+          });
+          const { getByText } = render(
+            <MemoryRouter initialEntries={["/update-product/product1"]}>
+              <Routes>
+                <Route
+                  path="/update-product/product1"
+                  element={<UpdateProduct />}
+                />
+              </Routes>
+            </MemoryRouter>
+          );
+          await waitFor(() => {
+            expect(axios.get).toHaveBeenCalledWith(
+              "/api/v1/product/get-product/product1"
+            );
+          });
+          fireEvent.click(getByText("UPDATE PRODUCT"));
+          await waitFor(() => {
+            expect(axios.put).not.toHaveBeenCalled();
+          });
+          await waitFor(() => {
+            expect(toast.error).toHaveBeenCalledWith("Product update failed");
+          });
+        });
+      });
     });
 
     describe("When the product is deleted", () => {
