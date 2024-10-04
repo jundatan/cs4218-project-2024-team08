@@ -49,9 +49,8 @@ const mockProductResultGenerator = (length) => {
 };
 
 describe("Search component", () => {
-
     describe("When searching for a product", () => {
-        describe("Given 0 products are found", () => {
+        describe("When 0 products are found", () => {
             it("should display 'No Products Found'", () => {
                 useSearch.mockReturnValue([{ results: [] }, jest.fn()]);
                 render(<Search />);
@@ -59,7 +58,7 @@ describe("Search component", () => {
             });
         });
 
-        describe("Given 3 products are found", () => {
+        describe("When 3 products are found", () => {
             it("should display 'Found 3' and render all products", () => {
                 useSearch.mockReturnValue([{
                     results: mockProductResultGenerator(3)
@@ -73,8 +72,8 @@ describe("Search component", () => {
         });
     });
 
-    describe("When given product data", () => {
-        describe("Given all product data is present", () => {
+    describe("Given product data", () => {
+        describe("When all product data is present", () => {
             it("should display the product with all details", () => {
                 useSearch.mockReturnValue([{
                     results: [{
@@ -94,7 +93,7 @@ describe("Search component", () => {
             });
         });
 
-        describe("Given a product is missing an image", () => {
+        describe("When product data is missing an image", () => {
             it("should display alt text in place of the image", () => {
                 useSearch.mockReturnValue([{
                     results: [{
@@ -111,7 +110,7 @@ describe("Search component", () => {
             });
         });
 
-        describe("Given a product is missing a description", () => {
+        describe("When product data is missing a description", () => {
             it("should display an empty description field", () => {
                 useSearch.mockReturnValue([{
                     results: [{
@@ -129,7 +128,7 @@ describe("Search component", () => {
             });
         });
 
-        describe("Given the description is long (>= 30 characters)", () => {
+        describe("When product data description is long (>= 30 characters)", () => {
             it("should truncate the description", () => {
                 const longMockDescription = "This is a very long description that will be truncated.";
                 useSearch.mockReturnValue([{
@@ -148,7 +147,7 @@ describe("Search component", () => {
             });
         });
 
-        describe("Given a product is missing a price", () => {
+        describe("When product data is missing a price", () => {
             it("should not display the price", () => {
                 useSearch.mockReturnValue([{
                     results: [{
@@ -168,7 +167,7 @@ describe("Search component", () => {
     });
 
     describe("When clicking on buttons", () => {
-        describe("Given the 'More Details' button is clicked", () => {
+        describe("When the 'More Details' button is clicked", () => {
             it("should navigate the user to the product page", () => {
                 useSearch.mockReturnValue([{
                     results: [mockProduct]
@@ -180,7 +179,7 @@ describe("Search component", () => {
             });
         });
 
-        describe("Given the 'Add to Cart' button is clicked", () => {
+        describe("When the 'Add to Cart' button is clicked", () => {
             it("should add the respective item to the cart", () => {
                 // Mock useSearch to return a product
                 useSearch.mockReturnValue([{
