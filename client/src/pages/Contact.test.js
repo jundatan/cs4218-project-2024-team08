@@ -27,26 +27,19 @@ describe("Contact Component", () => {
     });
 
     describe("When the contact information is displayed", () => {
-      it("should display the contact heading", () => {
+
+      it("should display the correct heading", () => {
         expect(screen.getByRole("heading", { name: "CONTACT US" })).toBeInTheDocument();
       });
 
-      it("should display the contact description", () => {
-        expect(
-          screen.getByText(/For any query or info about product, feel free to call anytime/i)
-        ).toBeInTheDocument();
-      });
-
-      it("should display the email address", () => {
+      it("should display the correct contact details", () => {
         expect(screen.getByText(/www.help@ecommerceapp.com/i)).toBeInTheDocument();
-      });
-
-      it("should display the phone number", () => {
         expect(screen.getByText(/012-3456789/i)).toBeInTheDocument();
+        expect(screen.getByText(/1800-0000-0000/i)).toBeInTheDocument();
       });
 
-      it("should display the toll-free number", () => {
-        expect(screen.getByText(/1800-0000-0000/i)).toBeInTheDocument();
+      it("should display the correct description", () => {
+        expect(screen.getByText(/For any query or info about product, feel free to call anytime/i)).toBeInTheDocument();
       });
     });
 
