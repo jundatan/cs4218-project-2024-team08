@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../context/auth';
 import { useCart } from '../../context/cart';
 import { useSearch } from '../../context/search';
-import {useCategory} from '../../hooks/useCategory';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 jest.mock('axios');
@@ -28,6 +27,7 @@ describe('Profile Component', () => {
     name: 'John Doe',
     email: 'john.doe@example.com',
     phone: '123456789',
+    password: 'oldpassword',
     address: '123 Street',
   };
 
@@ -35,7 +35,7 @@ describe('Profile Component', () => {
 
   beforeEach(() => {
     useAuth.mockReturnValue([{ user: mockUser }, mockSetAuth]);
-    useCart.mockReturnValue([[], jest.fn()]); // Empty cart initially
+    useCart.mockReturnValue([[], jest.fn()]);
     useSearch.mockReturnValue([{ query: '', results: [] }, jest.fn()]);
     localStorage.setItem('auth', JSON.stringify({ user: mockUser }));
   });
@@ -44,7 +44,7 @@ describe('Profile Component', () => {
     jest.clearAllMocks();
   });
 
-  test('renders the profile form with initial data', () => {
+  it('renders the profile form with initial data', () => {
     render(
         <MemoryRouter>
             <Profile />
@@ -58,7 +58,7 @@ describe('Profile Component', () => {
     expect(screen.getByPlaceholderText('Enter Your Address').value).toBe(mockUser.address);
   });
 
-  test('updates the profile successfully with all fields filled correctly', async () => {
+  it('updates the profile successfully with all fields filled correctly', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
@@ -77,7 +77,6 @@ describe('Profile Component', () => {
         </MemoryRouter>
         );
 
-    // Simulate changing form inputs
     fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
       target: { value: 'Jane Doe' },
     });
@@ -91,10 +90,8 @@ describe('Profile Component', () => {
       target: { value: 'newPassword' },
     });
 
-    // Simulate form submission
     fireEvent.click(screen.getByText('UPDATE'));
 
-    // Wait for the axios PUT request to resolve
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
         name: 'Jane Doe',
@@ -105,11 +102,8 @@ describe('Profile Component', () => {
       });
     });
 
-
-    // Expect toast success to have been called
     expect(toast.success).toHaveBeenCalledWith('Profile Updated Successfully');
 
-    // Expect the auth context to have been updated
     expect(mockSetAuth).toHaveBeenCalledWith({
       user: {
         name: 'Jane Doe',
@@ -120,7 +114,6 @@ describe('Profile Component', () => {
       },
     });
 
-    // Expect localStorage to have been updated
     const ls = JSON.parse(localStorage.getItem('auth'));
     expect(ls.user.name).toBe('Jane Doe');
     expect(ls.user.phone).toBe('987654321');
@@ -128,14 +121,15 @@ describe('Profile Component', () => {
     expect(ls.user.address).toBe('321 Avenue');
   });
 
-  test('allows successful profile update when only the name is changed', async () => {
+  it('all fields empty', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
-          name: 'Jone Doe',
-          email: 'john.doe@example.com',
-          phone: '123456789',
-          address: '123 Street',
+          name: mockUser.name,
+          email: mockUser.email,
+          phone: mockUser.phone,
+          password: mockUser.password,
+          address: mockUser.address,
         },
       },
     });
@@ -146,102 +140,284 @@ describe('Profile Component', () => {
         </MemoryRouter>
         );
 
-    // Simulate changing form inputs
     fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
-      target: { value: 'Jone Doe' },
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+      target: { value: '' },
     });
 
-    // Simulate form submission
     fireEvent.click(screen.getByText('UPDATE'));
 
-    // Wait for the axios PUT request to resolve
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
-        name: 'Jone Doe',
-        email: 'john.doe@example.com',
-        phone: '123456789',
-        address: '123 Street',
+        name: '',
+        email: mockUser.email,
+        phone: '',
+        address: '',
         password: '',
       });
     });
 
 
-    // Expect toast success to have been called
     expect(toast.success).toHaveBeenCalledWith('Profile Updated Successfully');
 
-    // Expect the auth context to have been updated
     expect(mockSetAuth).toHaveBeenCalledWith({
       user: {
-        name: 'Jone Doe',
-        email: 'john.doe@example.com',
-        phone: '123456789',
-        address: '123 Street',
+        name: mockUser.name,
+        email: mockUser.email,
+        phone: mockUser.phone,
+        address: mockUser.address,
+        password: mockUser.password,
       },
     });
 
-    // Expect localStorage to have been updated
     const ls = JSON.parse(localStorage.getItem('auth'));
-    expect(ls.user.name).toBe('Jone Doe');
-    expect(ls.user.phone).toBe('123456789');
-    expect(ls.user.address).toBe('123 Street');
+    expect(ls.user.name).toBe(mockUser.name);
+    expect(ls.user.phone).toBe(mockUser.phone);
+    expect(ls.user.address).toBe(mockUser.address);
   });
 
-  test('prevents profile update and shows error when password is shorter than 6 characters', async () => {
-    // Mock the axios PUT request to return an error due to short password
+  it('Name is empty, password is invalid, phone is non-empty, address is non-empty', async () => {
+    axios.put.mockResolvedValue({
+          data: {
+            error: 'Password is required and must be 6 characters long',
+          },
+        });
+      
+        render(
+          <MemoryRouter>
+            <Profile />
+          </MemoryRouter>
+        );
+      
+        fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
+          target: { value: '1231' }, 
+        });
+        fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
+          target: { value: '' }, 
+        });
+        fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
+          target: { value: '12345' }, 
+        });
+        fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+          target: { value: '123 Address' }, 
+        });
+      
+        fireEvent.click(screen.getByText('UPDATE'));
+      
+        await waitFor(() => {
+          expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
+            name: '',
+            email: mockUser.email,
+            phone: '12345',
+            address: '123 Address',
+            password: '1231',
+          });
+        });
+      
+        expect(toast.error).toHaveBeenCalledWith('Password is required and must be 6 characters long');
+      
+        expect(mockSetAuth).not.toHaveBeenCalled();
+      
+        const ls = JSON.parse(localStorage.getItem('auth'));
+        expect(ls.user.name).toBe('John Doe');
+        expect(ls.user.phone).toBe('123456789');
+        expect(ls.user.address).toBe('123 Street');
+        expect(ls.user.password).not.toBe('1231');
+      });
+
+  it('Name is non-empty, password is empty, phone is empty, address is empty', async () => {
+    axios.put.mockResolvedValue({
+      data: {
+        updatedUser: {
+          name: 'Jacob',
+          email: mockUser.email,
+          phone: mockUser.phone,
+          password: mockUser.password,
+          address: mockUser.address,
+        },
+      },
+    });
+
+    render(
+        <MemoryRouter>
+            <Profile />
+        </MemoryRouter>
+        );
+
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
+      target: { value: 'Jacob' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+      target: { value: '' },
+    });
+
+    fireEvent.click(screen.getByText('UPDATE'));
+
+    await waitFor(() => {
+      expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '',
+        address: '',
+        password: '',
+      });
+    });
+
+
+    expect(toast.success).toHaveBeenCalledWith('Profile Updated Successfully');
+
+    expect(mockSetAuth).toHaveBeenCalledWith({
+      user: {
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: mockUser.phone,
+        password: mockUser.password,
+        address: mockUser.address,
+      },
+    });
+
+    const ls = JSON.parse(localStorage.getItem('auth'));
+    expect(ls.user.name).toBe('Jacob');
+    expect(ls.user.phone).toBe(mockUser.phone);
+    expect(ls.user.address).toBe(mockUser.address);
+  });
+
+  it('Name is non-empty, password is valid, phone is empty, address is empty', async () => {
+    axios.put.mockResolvedValue({
+      data: {
+        updatedUser: {
+          name: 'Jacob',
+          email: mockUser.email,
+          phone: mockUser.phone,
+          password: 'hashedPassword',
+          address: mockUser.address,
+        },
+      },
+    });
+
+    render(
+        <MemoryRouter>
+            <Profile />
+        </MemoryRouter>
+        );
+
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
+      target: { value: 'Jacob' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
+      target: { value: '12345678' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+      target: { value: '' },
+    });
+
+    fireEvent.click(screen.getByText('UPDATE'));
+
+    await waitFor(() => {
+      expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '',
+        address: '',
+        password: '12345678',
+      });
+    });
+
+    expect(toast.success).toHaveBeenCalledWith('Profile Updated Successfully');
+
+    expect(mockSetAuth).toHaveBeenCalledWith({
+      user: {
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: mockUser.phone,
+        password: 'hashedPassword',
+        address: mockUser.address,
+      },
+    });
+
+    const ls = JSON.parse(localStorage.getItem('auth'));
+    expect(ls.user.name).toBe('Jacob');
+    expect(ls.user.phone).toBe(mockUser.phone);
+    expect(ls.user.address).toBe(mockUser.address);
+    expect(ls.user.password).toBe('hashedPassword');
+  }); 
+
+  it('Name is non-empty, password is invalid, phone is empty, address is empty', async () => {
     axios.put.mockResolvedValue({
       data: {
         error: 'Password is required and must be 6 characters long',
       },
     });
   
-    // Render the Profile component
     render(
       <MemoryRouter>
         <Profile />
       </MemoryRouter>
     );
   
-    // Simulate changing the password input to a value less than 6 characters
     fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
-      target: { value: '1231' }, // Password less than 6 characters
+      target: { value: '1231' }, 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
+      target: { value: 'Jacob' }, 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
+      target: { value: '' }, 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+      target: { value: '' }, 
     });
   
-    // Simulate form submission
     fireEvent.click(screen.getByText('UPDATE'));
   
-    // Wait for the axios PUT request to resolve and expect it to have been called
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        phone: '123456789',
-        address: '123 Street',
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '',
+        address: '',
         password: '1231',
       });
     });
   
-    // Expect an error toast to have been shown due to short password
+
     expect(toast.error).toHaveBeenCalledWith('Password is required and must be 6 characters long');
   
-    // Ensure no auth update occurs because the update failed
     expect(mockSetAuth).not.toHaveBeenCalled();
   
-    // Expect localStorage to remain unchanged as update failed
     const ls = JSON.parse(localStorage.getItem('auth'));
-    expect(ls.user.name).toBe('John Doe');
-    expect(ls.user.phone).toBe('123456789');
-    expect(ls.user.address).toBe('123 Street');
-    expect(ls.user.password).not.toBe('1231'); // Password should remain unchanged
+    expect(ls.user.name).toBe(mockUser.name);
+    expect(ls.user.phone).toBe(mockUser.phone);
+    expect(ls.user.address).toBe(mockUser.address);
+    expect(ls.user.password).not.toBe('1231');
   });
 
-  test('allows successful profile update when only the phone number is changed', async () => {
+  it('Name is non-empty, password is empty, phone is non-empty, address is empty', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
-          name: 'John Doe',
-          email: 'john.doe@example.com',
-          phone: '1234',
-          address: '123 Street',
+          name: 'Jacob',
+          email: mockUser.email,
+          phone: "12345",
+          password: mockUser.password,
+          address: mockUser.address,
         },
       },
     });
@@ -252,115 +428,167 @@ describe('Profile Component', () => {
         </MemoryRouter>
         );
 
-    // Simulate changing form inputs
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
+      target: { value: 'Jacob' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
+      target: { value: '' },
+    });
     fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
-      target: { value: '1234' },
+      target: { value: '12345' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+      target: { value: '' },
     });
 
-    // Simulate form submission
     fireEvent.click(screen.getByText('UPDATE'));
 
-    // Wait for the axios PUT request to resolve
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        phone: '1234',
-        address: '123 Street',
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '12345',
+        address: '',
         password: '',
       });
     });
 
 
-    // Expect toast success to have been called
     expect(toast.success).toHaveBeenCalledWith('Profile Updated Successfully');
 
-    // Expect the auth context to have been updated
     expect(mockSetAuth).toHaveBeenCalledWith({
       user: {
-        name: 'John Doe',
-        email: 'john.doe@example.com',
-        phone: '1234',
-        address: '123 Street',
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '12345',
+        password: mockUser.password,
+        address: mockUser.address,
       },
     });
 
-    // Expect localStorage to have been updated
-    const ls = JSON.parse(localStorage.getItem('auth'));
-    expect(ls.user.name).toBe('John Doe');
-    expect(ls.user.phone).toBe('1234');
-    expect(ls.user.address).toBe('123 Street');
-  });
 
-  test('updates the profile successfully even when the phone number is missing', async () => {
+    const ls = JSON.parse(localStorage.getItem('auth'));
+    expect(ls.user.name).toBe('Jacob');
+    expect(ls.user.phone).toBe('12345');
+    expect(ls.user.address).toBe(mockUser.address);
+    expect(ls.user.password).toBe(mockUser.password);
+  }); 
+
+  it('Name is non-empty, password is invalid, phone is non-empty, address is non-empty', async () => {
     axios.put.mockResolvedValue({
       data: {
-        updatedUser: {
-          name: 'Jane Doe',
-          email: 'john.doe@example.com',
-          phone: mockUser.phone,  // fallback phone value
-          address: '321 Avenue',
-        },
+        error: 'Password is required and must be 6 characters long',
       },
     });
+  
 
     render(
       <MemoryRouter>
         <Profile />
       </MemoryRouter>
     );
-
-    // Simulate changing form inputs with empty phone field
-    fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
-      target: { value: 'Jane Doe' },
-    });
-    
-    fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
-        target: { value: '' },
-    });
-    
-    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
-      target: { value: '321 Avenue' },
-    });
+  
     fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
-        target: { value: 'newPassword' },
+      target: { value: '1234' }, 
     });
-
-    // Simulate form submission
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
+      target: { value: 'Jacob' }, 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
+      target: { value: '12345' }, 
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+      target: { value: 'Sesame Street 123' }, 
+    });
+  
     fireEvent.click(screen.getByText('UPDATE'));
-
-    // Wait for the axios PUT request to resolve
+  
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
-        name: 'Jane Doe',
-        email: 'john.doe@example.com',
-        phone: '', 
-        address: '321 Avenue',
-        password: 'newPassword',
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '12345',
+        address: 'Sesame Street 123',
+        password: '1234',
       });
     });
+  
+    expect(toast.error).toHaveBeenCalledWith('Password is required and must be 6 characters long');
+  
+    expect(mockSetAuth).not.toHaveBeenCalled();
+  
+    const ls = JSON.parse(localStorage.getItem('auth'));
+    expect(ls.user.name).toBe(mockUser.name);
+    expect(ls.user.phone).toBe(mockUser.phone);
+    expect(ls.user.address).toBe(mockUser.address);
+    expect(ls.user.password).not.toBe('1234');
+  });
 
-    // Expect toast success to have been called
-    expect(toast.success).toHaveBeenCalledWith('Profile Updated Successfully');
-
-    // Expect the auth context to have been updated with fallback phone
-    expect(mockSetAuth).toHaveBeenCalledWith({
-      user: {
-        name: 'Jane Doe',
-        email: 'john.doe@example.com',
-        phone: mockUser.phone,  // Expect the fallback value to be used
-        address: '321 Avenue',
+  it('Name is non-empty, password is empty, phone is non-empty, address is non-empty', async () => {
+    axios.put.mockResolvedValue({
+      data: {
+        updatedUser: {
+          name: 'Jacob',
+          email: mockUser.email,
+          phone: "12345",
+          password: mockUser.password,
+          address: 'Sesame Street 123',
+        },
       },
     });
 
-    // Expect localStorage to have been updated with fallback phone
-    const ls = JSON.parse(localStorage.getItem('auth'));
-    expect(ls.user.name).toBe('Jane Doe');
-    expect(ls.user.phone).toBe(mockUser.phone);  // Expect fallback value
-    expect(ls.user.address).toBe('321 Avenue');
-});
+    render(
+        <MemoryRouter>
+            <Profile />
+        </MemoryRouter>
+        );
 
-  test('shows an error notification when the profile update request fails', async () => {
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Name'), {
+      target: { value: 'Jacob' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Password'), {
+      target: { value: '' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Phone'), {
+      target: { value: '12345' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Enter Your Address'), {
+      target: { value: 'Sesame Street 123' },
+    });
+
+    fireEvent.click(screen.getByText('UPDATE'));
+
+    await waitFor(() => {
+      expect(axios.put).toHaveBeenCalledWith('/api/v1/auth/profile', {
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '12345',
+        address: 'Sesame Street 123',
+        password: '',
+      });
+    });
+
+
+    expect(toast.success).toHaveBeenCalledWith('Profile Updated Successfully');
+
+    expect(mockSetAuth).toHaveBeenCalledWith({
+      user: {
+        name: 'Jacob',
+        email: mockUser.email,
+        phone: '12345',
+        password: mockUser.password,
+        address: 'Sesame Street 123',
+      },
+    });
+
+    const ls = JSON.parse(localStorage.getItem('auth'));
+    expect(ls.user.name).toBe('Jacob');
+    expect(ls.user.phone).toBe('12345');
+    expect(ls.user.address).toBe('Sesame Street 123');
+    expect(ls.user.password).toBe(mockUser.password);
+  });
+
+  it('shows an error notification when the profile update request fails', async () => {
     axios.put.mockRejectedValue(new Error('Update failed'));
 
     render(
@@ -369,15 +597,12 @@ describe('Profile Component', () => {
         </MemoryRouter>
       );
 
-    // Simulate form submission
     fireEvent.click(screen.getByText('UPDATE'));
 
-    // Wait for the axios PUT request to fail
     await waitFor(() => {
       expect(axios.put).toHaveBeenCalled();
     });
 
-    // Expect toast error to have been called
     expect(toast.error).toHaveBeenCalledWith('Something went wrong');
   });
 });

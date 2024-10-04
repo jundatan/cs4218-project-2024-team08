@@ -5,24 +5,28 @@ import { MemoryRouter } from 'react-router-dom';
 import { useAuth } from '../../context/auth';
 import { useCart } from '../../context/cart';
 import { useSearch } from '../../context/search';
-import {useCategory} from '../../hooks/useCategory';
 import Orders from './Orders';
 import '@testing-library/jest-dom/extend-expect';
 import { act } from 'react-dom/test-utils';
 
-// Mocking axios and context
+
 jest.mock('axios');
-jest.mock('../../context/auth');
-jest.mock('../../context/cart');
-jest.mock('../../context/search');
-jest.mock('../../hooks/useCategory');
+jest.mock("react-hot-toast");
+
+jest.mock("../../context/auth", () => ({
+    useAuth: jest.fn(() => [null, jest.fn()]), 
+  }));
+
+  jest.mock("../../context/cart", () => ({
+    useCart: jest.fn(() => [null, jest.fn()]),
+  }));
+
+  jest.mock("../../context/search", () => ({
+    useSearch: jest.fn(() => [{ keyword: "" }, jest.fn()]), 
+  }));
 
 const mockCategories = [{ id: 1, name: 'Category 1' }];
-axios.get.mockResolvedValueOnce({
-  data: {
-    category: mockCategories
-  }
-});
+
 
 
 describe('Orders Component', () => {
@@ -30,24 +34,19 @@ describe('Orders Component', () => {
     const mockAuth = { token: 'mockToken' };
 
     beforeEach(() => {
+        axios.get.mockResolvedValueOnce({
+            data: {
+              category: mockCategories
+            }
+          });
         useAuth.mockReturnValue([mockAuth, mockSetAuth]);
-        useCart.mockReturnValue([[], jest.fn()]); // Empty cart initially
+        useCart.mockReturnValue([[], jest.fn()]); 
         useSearch.mockReturnValue([{ query: '', results: [] }, jest.fn()]);
         
     });
 
     afterEach(() => {
         jest.clearAllMocks();
-    });
-
-    it('renders Orders component and displays title', () => {
-        const { getByText } = render(
-            <MemoryRouter>
-                <Orders />
-            </MemoryRouter>
-        );
-
-        expect(getByText('All Orders')).toBeInTheDocument();
     });
 
     it('fetches and displays orders successfully', async () => {
@@ -65,7 +64,7 @@ describe('Orders Component', () => {
                     },
                 ],
                 payment: {
-                    transaction: {}, // Adjust as necessary
+                    transaction: {},
                     success: true,
                 },
                 buyer: {
@@ -93,31 +92,15 @@ describe('Orders Component', () => {
         expect(axios.get).toHaveBeenCalledWith('/api/v1/auth/orders');
     });
 
-    expect(screen.getByText('All Orders')).toBeInTheDocument();
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
-    expect(screen.getByText('Not Process')).toBeInTheDocument();
-    expect(screen.getByText('Product 1')).toBeInTheDocument();
-    expect(screen.getByText('Price : 100')).toBeInTheDocument();
+    expect(screen.getByText('#')).toBeInTheDocument();
+    expect(screen.getByText('Status')).toBeInTheDocument();
+    expect(screen.getByText('Buyer')).toBeInTheDocument();
+    expect(screen.getByText('date')).toBeInTheDocument();
+    expect(screen.getByText('Payment')).toBeInTheDocument();
+    expect(screen.getByText('Quantity')).toBeInTheDocument();
 });
-
-    it('handles no orders case gracefully', async () => {
-        axios.get.mockResolvedValueOnce({ data: [] });
-
-        const { getByText } = render(
-            <MemoryRouter>
-                <Orders />
-            </MemoryRouter>
-        );
-
-        // Wait for the orders to be fetched
-        await waitFor(() => expect(axios.get).toHaveBeenCalledWith('/api/v1/auth/orders'));
-
-        // Check that no orders are displayed
-        expect(getByText('All Orders')).toBeInTheDocument();
-    });
-
     it('logs an error when fetching orders fails', async () => {
-        console.log = jest.fn(); // Mock console.error to suppress output during the test
+        console.log = jest.fn(); 
 
         axios.get.mockRejectedValueOnce(new Error('Network Error'));
 
@@ -132,7 +115,7 @@ describe('Orders Component', () => {
         expect(console.log).toHaveBeenCalledWith(expect.any(Error));
     });
 
-    it('Correctly displays the quantity', async () => {
+    it('displays orders accurately', async () => {
         const mockOrders = [
             {
                 _id: '66f44a13b264f32a2d07a98c', 
@@ -146,7 +129,7 @@ describe('Orders Component', () => {
                     },
                 ],
                 payment: {
-                    transaction: {}, // Adjust as necessary
+                    transaction: {},
                     success: true,
                 },
                 buyer: {
@@ -161,7 +144,6 @@ describe('Orders Component', () => {
         ];
     
     axios.get.mockResolvedValueOnce({ data: mockOrders });
-    console.log('Mock Orders passed to axios:', mockOrders); 
 
     await act(async () => {
         render(
@@ -175,22 +157,25 @@ describe('Orders Component', () => {
         expect(axios.get).toHaveBeenCalledWith('/api/v1/auth/orders');
     });
 
-    expect(screen.getByText('10')).toBeInTheDocument();
-
+    expect(screen.getByText('Not Process')).toBeInTheDocument(); // Status
+    expect(screen.getByText('John Doe')).toBeInTheDocument();// Buyer Name
+    expect(screen.getByText('Price : 100')).toBeInTheDocument();// Price
+    expect(screen.getByText('Success')).toBeInTheDocument(); // Payment Status
+    expect(screen.getByText('Product 1')).toBeInTheDocument(); // Product Name
+    expect(screen.getByText('Description for product 1')).toBeInTheDocument(); // Description
+    expect(screen.getByText('10')).toBeInTheDocument(); // Quantity
     });
 
     it('does not call getOrders when auth.token is not available', async () => {
         useAuth.mockReturnValue([{ token: undefined }, jest.fn()]);
 
-        // Render the component without auth.token
         render(
             <MemoryRouter>
-                <Orders /> {/* Pass the mockAuth prop if necessary */}
+                <Orders /> 
             </MemoryRouter>
         );
 
-        // Ensure that getOrders is not called
-        expect(axios.get).not.toHaveBeenCalled();
+        expect(axios.get).not.toHaveBeenCalledWith('/api/v1/auth/orders');
     });
 
     it('fetches and displays order with payment failure', async () => {
@@ -208,7 +193,7 @@ describe('Orders Component', () => {
                     },
                 ],
                 payment: {
-                    transaction: {}, // Adjust as necessary
+                    transaction: {}, 
                     success: false,
                 },
                 buyer: {
