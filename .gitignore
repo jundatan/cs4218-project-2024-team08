@@ -5,4 +5,4 @@ node_modules
 /playwright/.cache/
 /package.json/
 /package-lock.json/
-/coverage/
+coverage
