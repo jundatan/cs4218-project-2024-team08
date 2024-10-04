@@ -121,7 +121,7 @@ describe('Profile Component', () => {
     expect(ls.user.address).toBe('321 Avenue');
   });
 
-  it('all fields empty', async () => {
+  it('given all fields empty, update should be successful', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
@@ -184,7 +184,7 @@ describe('Profile Component', () => {
     expect(ls.user.address).toBe(mockUser.address);
   });
 
-  it('Name is empty, password is invalid, phone is non-empty, address is non-empty', async () => {
+  it('given empty name, invalid password, non-empty phone, non-empty address, it should throw error', async () => {
     axios.put.mockResolvedValue({
           data: {
             error: 'Password is required and must be 6 characters long',
@@ -233,7 +233,7 @@ describe('Profile Component', () => {
         expect(ls.user.password).not.toBe('1231');
       });
 
-  it('Name is non-empty, password is empty, phone is empty, address is empty', async () => {
+  it('given non-empty name, empty password, empty phone, empty address, it should update successfully', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
@@ -296,7 +296,7 @@ describe('Profile Component', () => {
     expect(ls.user.address).toBe(mockUser.address);
   });
 
-  it('Name is non-empty, password is valid, phone is empty, address is empty', async () => {
+  it('given non-empty name, valid password, empty phone, empty address, it should update successfully', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
@@ -359,7 +359,7 @@ describe('Profile Component', () => {
     expect(ls.user.password).toBe('hashedPassword');
   }); 
 
-  it('Name is non-empty, password is invalid, phone is empty, address is empty', async () => {
+  it('given non-empty name, invalid password, empty phone, empty address, it should throw error', async () => {
     axios.put.mockResolvedValue({
       data: {
         error: 'Password is required and must be 6 characters long',
@@ -409,7 +409,7 @@ describe('Profile Component', () => {
     expect(ls.user.password).not.toBe('1231');
   });
 
-  it('Name is non-empty, password is empty, phone is non-empty, address is empty', async () => {
+  it('given non-empty name, empty password, non-empty phone, empty address, it should update successfully', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
@@ -474,7 +474,7 @@ describe('Profile Component', () => {
     expect(ls.user.password).toBe(mockUser.password);
   }); 
 
-  it('Name is non-empty, password is invalid, phone is non-empty, address is non-empty', async () => {
+  it('given non-empty name, invalid password, non-empty phone, non-empty address, it should throw error', async () => {
     axios.put.mockResolvedValue({
       data: {
         error: 'Password is required and must be 6 characters long',
@@ -524,7 +524,7 @@ describe('Profile Component', () => {
     expect(ls.user.password).not.toBe('1234');
   });
 
-  it('Name is non-empty, password is empty, phone is non-empty, address is non-empty', async () => {
+  it('given non-empty name, empty password, non-empty phone, non-empty address, it should update successfully', async () => {
     axios.put.mockResolvedValue({
       data: {
         updatedUser: {
@@ -588,7 +588,7 @@ describe('Profile Component', () => {
     expect(ls.user.password).toBe(mockUser.password);
   });
 
-  it('shows an error notification when the profile update request fails', async () => {
+  it('given profile update request fails, it should show an toast error', async () => {
     axios.put.mockRejectedValue(new Error('Update failed'));
 
     render(
