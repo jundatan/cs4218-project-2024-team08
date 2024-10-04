@@ -16,7 +16,7 @@
       };
     });
 
-    test('should return photo when product has photo data', async () => {
+    it('should return photo when product has photo data', async () => {
       productModel.findById.mockReturnValue({
           select: jest.fn().mockResolvedValue({
             photo: {
@@ -34,7 +34,7 @@
       expect(res.send).toHaveBeenCalledWith(Buffer.from('test-photo-data'));
     });
 
-    test('should return 500 on database error', async () => {
+    it('should return 500 on database error', async () => {
       productModel.findById.mockReturnValue({
         select: jest.fn().mockRejectedValue(new Error('Database error')),
       });
