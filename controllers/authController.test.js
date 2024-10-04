@@ -5,8 +5,8 @@ import { hashPassword } from "../helpers/authHelper.js";
 jest.mock("../models/userModel");
 jest.mock("../helpers/authHelper"); 
 
-describe("Testing updating of user profile", () => {
-  it("All Valid fields profile update", async () => {
+describe("Testing updating of user profile using updateProfileController", () => {
+  it("All Valid fields, profile should update", async () => {
     const req = {
       user: { _id: "mockedUserId" },
       body: {
@@ -59,7 +59,7 @@ describe("Testing updating of user profile", () => {
     });
   });
 
-  it("All empty fields", async () => {
+  it("All empty fields, profile should update", async () => {
     const req = {
       user: { _id: "mockedUserId" },
       body: { name: "", email: "", password: "", phone: "", address: "" },
@@ -106,7 +106,7 @@ describe("Testing updating of user profile", () => {
     });
   });
 
-  it("Empty name, Non-empty invalid password , non-empty phone, non-empty Address", async () => {
+  it("Empty name, Non-empty invalid password , non-empty phone, non-empty Address, should throw error", async () => {
     const req = {
       user: { _id: "mockedUserId" },
       body: {
@@ -131,7 +131,7 @@ describe("Testing updating of user profile", () => {
     });
   });
 
-  it("Non-empty name, empty password, non-empty phone, empty address", async () => {
+  it("Non-empty name, empty password, non-empty phone, empty address, should update", async () => {
     const req = {
       user: { _id: "mockedUserId" },
       body: {
@@ -184,7 +184,7 @@ describe("Testing updating of user profile", () => {
     });
   });
 
-  it("Non-empty name, non-empty valid password, empty phone, non-empty address", async () => {
+  it("Non-empty name, non-empty valid password, empty phone, non-empty address, should update", async () => {
     const req = {
       user: { _id: "mockedUserId" },
       body: {
@@ -237,7 +237,7 @@ describe("Testing updating of user profile", () => {
     });
   });
 
-  it("Non-empty name, Non-empty invalid password , empty phone, empty Address", async () => {
+  it("Non-empty name, Non-empty invalid password , empty phone, empty Address, should throw error", async () => {
     const req = {
       user: { _id: "mockedUserId" },
       body: {
@@ -262,7 +262,7 @@ describe("Testing updating of user profile", () => {
     });
   });
 
-  it("Empty name, non-empty valid password, non-empty phone, empty address", async () => {
+  it("Empty name, non-empty valid password, non-empty phone, empty address, should update", async () => {
     const req = {
       user: { _id: "mockedUserId" },
       body: {
