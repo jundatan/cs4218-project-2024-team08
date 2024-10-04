@@ -48,6 +48,7 @@
     "sonarqube-scanner": "^3.3.0"
   },
   "jest": {
+    "verbose": true,
     "projects": [
       "./jest-backend.config.cjs",
       "./jest-frontend.config.cjs"
