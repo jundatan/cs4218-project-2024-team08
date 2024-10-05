@@ -27,14 +27,19 @@ describe("Category Product", () => {
         jest.clearAllMocks();
     })
 
-    it("should render loading state correctly", () => {
+    // it("should render loading state correctly", () => {
+    //     render(<CategoryProduct />);
+
+    //     expect(screen.getByText(/Category -/i)).toBeInTheDocument();
+    //     expect(screen.getByText("0 result found")).toBeInTheDocument();
+    // });
+
+    it("should fetch and display product if it is working", async () => {
         render(<CategoryProduct />);
 
         expect(screen.getByText(/Category -/i)).toBeInTheDocument();
         expect(screen.getByText("0 result found")).toBeInTheDocument();
-    });
 
-    it("should fetch and display product if it is working", async () => {
         axios.get.mockResolvedValue({
             data: {
                 products: [

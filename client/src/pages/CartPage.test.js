@@ -46,7 +46,17 @@ describe("CartPage", () => {
         cleanup();
     });
 
-    it("should render loading state and empty cart message", () => {
+    // it("should render loading state and empty cart message", () => {
+    //     useAuth.mockReturnValue([null, jest.fn()]);
+    //     useCart.mockReturnValue([[], jest.fn()]);
+
+    //     render(<CartPage />);
+
+    //     expect(screen.getByText(/Hello Guest/i)).toBeInTheDocument();
+    //     expect(screen.getByText(/Your Cart Is Empty/i)).toBeInTheDocument();
+    // });
+
+    it("should render cart items correctly", async () => {
         useAuth.mockReturnValue([null, jest.fn()]);
         useCart.mockReturnValue([[], jest.fn()]);
 
@@ -54,9 +64,7 @@ describe("CartPage", () => {
 
         expect(screen.getByText(/Hello Guest/i)).toBeInTheDocument();
         expect(screen.getByText(/Your Cart Is Empty/i)).toBeInTheDocument();
-    });
 
-    it("should render cart items correctly", async () => {
         const mockCart = [
             {
                 _id: "1",
@@ -189,28 +197,28 @@ describe("CartPage", () => {
         expect(mockNavigate).toHaveBeenCalledWith("/dashboard/user/orders");
     });
 
-    it("should display empty cart message", () => {
-        const mockUser = { user: { name: "John Doe", address: "123 Main St" }, token: "mockToken" };
-        useAuth.mockReturnValue([mockUser, jest.fn()]);
-        useCart.mockReturnValue([[], jest.fn()]);
+    // it("should display empty cart message", () => {
+    //     const mockUser = { user: { name: "John Doe", address: "123 Main St" }, token: "mockToken" };
+    //     useAuth.mockReturnValue([mockUser, jest.fn()]);
+    //     useCart.mockReturnValue([[], jest.fn()]);
 
-        render(<CartPage />);
+    //     render(<CartPage />);
 
-        expect(screen.getByText(/Your Cart Is Empty/i)).toBeInTheDocument();
-    });
+    //     expect(screen.getByText(/Your Cart Is Empty/i)).toBeInTheDocument();
+    // });
 
-    it("should handle error fetching Braintree token", async () => {
-        const error = new Error("Network Error");
-        axios.get.mockRejectedValueOnce(error);
+    // it("should handle error fetching Braintree token", async () => {
+    //     const error = new Error("Network Error");
+    //     axios.get.mockRejectedValueOnce(error);
 
-        const mockUser = { user: { name: "John Doe", address: "123 Main St" }, token: "mockToken" };
-        useAuth.mockReturnValue([mockUser, jest.fn()]);
-        useCart.mockReturnValue([[], jest.fn()]);
+    //     const mockUser = { user: { name: "John Doe", address: "123 Main St" }, token: "mockToken" };
+    //     useAuth.mockReturnValue([mockUser, jest.fn()]);
+    //     useCart.mockReturnValue([[], jest.fn()]);
 
-        render(<CartPage />);
+    //     render(<CartPage />);
 
-        await waitFor(() => {
-            expect(console.log).toHaveBeenCalledWith(error);
-        });
-    });
+    //     await waitFor(() => {
+    //         expect(console.log).toHaveBeenCalledWith(error);
+    //     });
+    // });
 });

@@ -6,16 +6,11 @@ import useCategory from "./useCategory.js";
 jest.mock("axios");
 
 describe("useCategory", () => {
-    it("should return the initial value for category", async () => {
-        const { result } = renderHook(() => useCategory());
-
-        await waitFor(() => {
-            expect(result.current).toEqual([]);
-        });
-    });
-
     describe("when categories are fetched successfully", () => {
         let mockedCategories;
+
+        const { result } = renderHook(() => useCategory());
+        expect(result.current).toEqual([]);
 
         beforeEach(() => {
             mockedCategories = [
@@ -44,7 +39,7 @@ describe("useCategory", () => {
         });
 
         it("should handle error", async () => {
-            const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+            const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => { });
 
             const { result } = renderHook(() => useCategory());
 
