@@ -8,14 +8,16 @@ import "@testing-library/jest-dom/extend-expect";
 // Mock dependencies
 jest.mock("axios");
 jest.mock("../components/Header.js", () => <div>Mocked Header</div>);
+jest.mock("../components/Layout.js", () => ({ children }) => <div>{children}</div>);
 jest.mock("../context/auth", () => ({
     useAuth: jest.fn(() => [null, jest.fn()]),
 }));
 jest.mock("react-router-dom", () => ({
-    useParams: jest.fn(),
+    __esModule: true,
+    ...jest.requireActual("react-router-dom"),
     useNavigate: jest.fn(),
+    useParams: jest.fn(),
 }));
-jest.mock("../components/Layout.js", () => ({ children }) => <div>{children}</div>);
 
 describe("Category Product", () => {
     beforeEach(() => {

@@ -1,7 +1,6 @@
 import React from "react";
 import { render, screen, waitFor, fireEvent, cleanup } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
-import { Prices } from "../components/Prices";
 import { useCart } from "../context/cart";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,7 +11,11 @@ import "@testing-library/jest-dom/extend-expect";
 jest.mock("axios");
 jest.mock("react-hot-toast");
 jest.mock("../context/cart", () => ({ useCart: jest.fn() }));
-jest.mock("react-router-dom", () => ({ useNavigate: jest.fn() }));
+jest.mock("react-router-dom", () => ({
+    __esModule: true,
+    ...jest.requireActual("react-router-dom"),
+    useNavigate: jest.fn(),
+}));
 jest.mock("../components/Layout", () => ({ children }) => <div>{children}</div>);
 
 Object.defineProperty(window, "localStorage", {
@@ -45,16 +48,16 @@ describe("HomePage", () => {
         cleanup();
     });
 
-    // it("should render loading state and initial products", async () => {
-    //     useCart.mockReturnValue([[], jest.fn()]);
+    it("should render loading state and initial products", async () => {
+        useCart.mockReturnValue([[], jest.fn()]);
 
-    //     axios.get.mockResolvedValueOnce({ data: { success: true, category: [] } });
-    //     axios.get.mockResolvedValueOnce({ data: { total: 0 } });
+        axios.get.mockResolvedValueOnce({ data: { success: true, category: [] } });
+        axios.get.mockResolvedValueOnce({ data: { total: 0 } });
 
-    //     render(<HomePage />);
+        render(<HomePage />);
 
-    //     expect(screen.getByText(/all products/i)).toBeInTheDocument();
-    // });
+        expect(screen.getByText(/all products/i)).toBeInTheDocument();
+    });
 
     it("should render products correctly", async () => {
         const mockProducts = [
