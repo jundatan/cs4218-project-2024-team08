@@ -168,13 +168,13 @@ describe("UpdateProduct component", () => {
 
       describe("When the form is submitted with empty fields", () => {
         it("should show error message if form is submitted with empty fields", async () => {
-          axios.put.mockResolvedValue({
+          axios.put.mockRejectedValue({
             data: {
               success: false,
-              message: "Product update failed",
+              message: "Quantity is Required",
             },
           });
-          const { getByText } = render(
+          const { getByText, getByPlaceholderText } = render(
             <MemoryRouter initialEntries={["/update-product/product1"]}>
               <Routes>
                 <Route
@@ -189,12 +189,27 @@ describe("UpdateProduct component", () => {
               "/api/v1/product/get-product/product1"
             );
           });
+          fireEvent.change(getByPlaceholderText("write a name"), {
+            target: { value: "Product 1" },
+          });
+          fireEvent.change(getByPlaceholderText("write a description"), {
+            target: { value: "Product 1 description" },
+          });
+          fireEvent.change(getByPlaceholderText("write a Price"), {
+            target: { value: 1 },
+          });
+          fireEvent.change(getByPlaceholderText("write a quantity"), {
+            target: { value: null },
+          });
           fireEvent.click(getByText("UPDATE PRODUCT"));
           await waitFor(() => {
-            expect(axios.put).not.toHaveBeenCalled();
+            expect(axios.put).toHaveBeenCalledWith(
+              "/api/v1/product/update-product/1",
+              expect.any(FormData)
+            );
           });
           await waitFor(() => {
-            expect(toast.error).toHaveBeenCalledWith("Product update failed");
+            expect(toast.error).toHaveBeenCalledWith("Quantity is Required");
           });
         });
       });

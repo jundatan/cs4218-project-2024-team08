@@ -160,7 +160,7 @@ describe("Create Product Component", () => {
           axios.post.mockResolvedValue({
             data: {
               success: false,
-              message: "Product creation failed",
+              message: "Price is Required",
             },
           });
           const { getByText, getByPlaceholderText } = render(
@@ -183,7 +183,7 @@ describe("Create Product Component", () => {
             target: { value: "Product 1 description" },
           });
           fireEvent.change(getByPlaceholderText("write a Price"), {
-            target: { value: 1 },
+            target: { value: null },
           });
           fireEvent.change(getByPlaceholderText("write a quantity"), {
             target: { value: 1 },
@@ -196,7 +196,7 @@ describe("Create Product Component", () => {
             );
           });
           await waitFor(() => {
-            expect(toast.error).toHaveBeenCalledWith("Product creation failed");
+            expect(toast.error).toHaveBeenCalledWith("Price is Required");
           });
         });
       });
