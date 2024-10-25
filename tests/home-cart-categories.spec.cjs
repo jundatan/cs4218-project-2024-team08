@@ -1,7 +1,7 @@
 const { test, expect, beforeEach, afterEach } = require('@playwright/test');
 
 beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000/');
+    await page.goto('http://localhost:3000/', { timeout: 30000 });
 
     // Expects Login page to load
     await page.click('text=Login');
