@@ -68,24 +68,24 @@ test.describe.serial('Search and ProductDetails Components', () => {
     
     test.afterAll(async () => {
         // Delete products after all tests.
-        for (const product of mockProducts) {
-            // Go to the product page
-            await page.goto(`http://localhost:3000/dashboard/admin/product/${product.name}`);
-            await page.waitForTimeout(4000);
-            // Handle the confirmation dialog
-            await page.getByRole('button', { name: 'DELETE PRODUCT' }).click();
-            await page.once('dialog', dialog => {
-                dialog.dismiss();
-            });
+        // for (const product of mockProducts) {
+        //     // Go to the product page
+        //     await page.goto(`http://localhost:3000/dashboard/admin/product/${product.name}`);
+        //     await page.waitForTimeout(4000);
+        //     // Handle the confirmation dialog
+        //     await page.getByRole('button', { name: 'DELETE PRODUCT' }).click();
+        //     await page.once('dialog', dialog => {
+        //         dialog.dismiss();
+        //     });
             
-        }
+        // }
     
-        // Delete the category
-        await page.goto('http://localhost:3000/dashboard/admin/create-category');
-        const rowLocator = page.locator('table tr').filter({
-            has: page.locator('td', { hasText: categoryName })
-        });
-        await rowLocator.locator('button', { hasText: 'Delete' });
+        // // Delete the category
+        // await page.goto('http://localhost:3000/dashboard/admin/create-category');
+        // const rowLocator = page.locator('table tr').filter({
+        //     has: page.locator('td', { hasText: categoryName })
+        // });
+        // await rowLocator.locator('button', { hasText: 'Delete' });
     
     });
     
