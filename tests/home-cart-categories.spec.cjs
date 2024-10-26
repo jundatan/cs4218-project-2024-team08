@@ -80,7 +80,7 @@ test('should reflect the new product on its CategoryProduct page', async({ page 
 
     // Upload an image for the product
     await page.click('label.btn.btn-outline-secondary');
-    const filePath = '../cs4218-project-2024-team08/client/public/images/WoodenChair.jpg'; // Update with your image path
+    const filePath = './client/public/images/WoodenChair.jpg'; // Update with your image path
     await page.setInputFiles('input[type="file"]', filePath);
     const img = page.locator('img[alt="product_photo"]');
 
