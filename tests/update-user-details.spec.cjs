@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe.serial("Serial tests for shared account", () => {
-  test("password", async ({ page }) => {
+  test("Changing User's Password", async ({ page }) => {
     await page.goto("http://localhost:3000/");
     await page.getByRole("link", { name: "Login" }).click();
     await page.getByPlaceholder("Enter Your Email ").fill("1234@Email.com");
@@ -52,7 +52,7 @@ test.describe.serial("Serial tests for shared account", () => {
   });
 });
 
-test("test", async ({ page }) => {
+test("Changing User's Name", async ({ page }) => {
   await page.goto("http://localhost:3000/");
   await page.getByRole("link", { name: "Login" }).click();
   await page.getByPlaceholder("Enter Your Email ").fill("123@Email.com");
@@ -77,7 +77,7 @@ test("test", async ({ page }) => {
   await page.getByRole("link", { name: "Logout" }).click();
 });
 
-test("address", async ({ page }) => {
+test("Changing User address details", async ({ page }) => {
   await page.goto("http://localhost:3000/");
   await page.getByRole("link", { name: "Login" }).click();
   await page.getByPlaceholder("Enter Your Email ").fill("123@Email.com");
