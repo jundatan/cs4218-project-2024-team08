@@ -14,3 +14,15 @@ If your group number is a single digit, i.e 2024-Team1 is fine as well.)
 The other members in the team will be able to see an existing team with your team number in the “Join an existing team” section. Click Join.
 
 ## Step 3. All of you should be able to see the acceptance page. Click on the assignment link to see the project on GitHub.
+
+## Contributions
+# Tan Jun Da
+- Wrote UI testing testcases for ./tests/admin.spec.cjs file.
+- Wrote Integration testing testcases for ./controllers/categoryControllerModel.integration.test.js file.
+- Created fake database and admin user in ./config/db.js
+- Ran SonarQube test with code coverage and write report
+
+# Yeo Wen Jue
+# Darius Ng Teng Wee
+# Dylan Sng Jie An
+# Koh Chen Huang, Samuel
