@@ -260,9 +260,6 @@ describe('Integration tests for SearchInput, Search, and ProductDetails componen
         jest.spyOn(Storage.prototype, 'getItem').mockReturnValueOnce(JSON.stringify([]));
         const setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
 
-        // Import the toast mock
-        const { toast } = require('react-toastify');
-
         // Render components inside MemoryRouter with routes and SearchProvider
         render(
           <MemoryRouter initialEntries={['/']}>
@@ -304,7 +301,6 @@ describe('Integration tests for SearchInput, Search, and ProductDetails componen
         const addToCartButton = screen.getByRole('button', { name: /ADD TO CART/i });
         fireEvent.click(addToCartButton);
 
-        // Wait for any asynchronous actions
         await waitFor(() => {
           // Expect localStorage.setItem to have been called with the updated cart
           expect(setItemSpy).toHaveBeenCalledWith(
