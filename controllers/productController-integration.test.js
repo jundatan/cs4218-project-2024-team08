@@ -50,7 +50,7 @@ describe("productPhotoController Integration Test", () => {
     const response = await request(app).get(`/product/${product._id}/photo`);
 
     // Assertions to check if the photo is returned correctly
-    expect(response.status).tvoBe(200);
+    expect(response.status).toBe(200);
     expect(response.header["content-type"]).toBe("image/png");
     expect(response.body).toEqual(Buffer.from("test-photo-data"));
   });
