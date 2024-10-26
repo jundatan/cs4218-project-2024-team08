@@ -8,6 +8,7 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         await page.click('text=Login');
         await page.waitForURL('http://localhost:3000/login');
         await expect(page.url()).toBe('http://localhost:3000/login');
+        await page.goto('http://localhost:3000/login');
     
         // Expects Home page to load
         await page.getByPlaceholder('Enter Your Email').fill('Test123@Email.com');
@@ -15,12 +16,14 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         await page.getByRole('button', { name: 'LOGIN' }).click();
         await page.waitForURL('http://localhost:3000/');
         await expect(page.url()).toBe('http://localhost:3000/');
+        await page.goto('http://localhost:3000/');
     
         // Expects Dashboard page to load
         await page.click('text=TestTest123123');
         await page.click('text=Dashboard');
         await page.waitForURL('http://localhost:3000/dashboard/admin');
         await expect(page.url()).toBe('http://localhost:3000/dashboard/admin');
+        await page.goto('http://localhost:3000/dashboard/admin');
     });
     
     afterEach(async ({ page }) => {
@@ -32,6 +35,7 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         // Expects Create Category page to load
         await page.click('text=Create Category');
         await expect(page.url()).toBe('http://localhost:3000/dashboard/admin/create-category');
+        await page.goto('http://localhost:3000/dashboard/admin/create-category');
     
         // Expects a message for successful creation of category
         await page.getByPlaceholder('Enter new category').fill('Chairs');
@@ -42,6 +46,7 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         await page.getByRole('link', { name: 'Categories' }).click();
         await page.click("text=All Categories");
         await expect(page.url()).toBe('http://localhost:3000/categories');
+        await page.goto('http://localhost:3000/categories');
         
         // Expects All Categories page to have reflect the new category
         await expect(page.getByRole('link', { name: 'Chairs' })).toBeVisible();
@@ -49,6 +54,7 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         // Expects Home Page to load
         await page.locator('a.nav-link[href="/"]').click();
         await expect(page.url()).toBe('http://localhost:3000/');
+        await page.goto('http://localhost:3000/');
         
         // Expects Home Page to have a checkbox for the new category
         await expect(page.getByLabel('Chairs')).toBeVisible();
@@ -60,12 +66,15 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         // Create a category
         await page.click('text=Create Category');
         await expect(page.url()).toBe('http://localhost:3000/dashboard/admin/create-category');
+        await page.goto('http://localhost:3000/dashboard/admin/create-category');
         await page.getByPlaceholder('Enter new category').fill('Chairs');
         await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(page.getByText('Chairs is created')).toBeVisible();
     
         // Expects Create Product page to load
         await page.click('text=Create Product');
         await expect(page.url()).toBe('http://localhost:3000/dashboard/admin/create-product');
+        await page.goto('http://localhost:3000/dashboard/admin/create-product');
     
         // Fill in particulars for the product
         await page.locator('input[role="combobox"][id="rc_select_0"]').click();
@@ -119,12 +128,15 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         // Create a category
         await page.click('text=Create Category');
         await expect(page.url()).toBe('http://localhost:3000/dashboard/admin/create-category');
+        await page.goto('http://localhost:3000/dashboard/admin/create-category');
         await page.getByPlaceholder('Enter new category').fill('Chairs');
         await page.getByRole('button', { name: 'Submit' }).click();
+        await expect(page.getByText('Chairs is created')).toBeVisible();
     
         // Create a product
         await page.click('text=Create Product');
         await expect(page.url()).toBe('http://localhost:3000/dashboard/admin/create-product');
+        await page.goto('http://localhost:3000/dashboard/admin/create-product');
         await page.locator('input[role="combobox"][id="rc_select_0"]').click();
         await page.keyboard.press('ArrowDown');
         await page.keyboard.press('Enter');
@@ -145,10 +157,11 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         await page.goto('http://localhost:3000/');
     
         // Expect Product to be on Home page
-        const productCard = page.locator('.card').nth(0);
+        const productCard = page.locator('.card', { hasText: 'Wooden' });
         const productName = productCard.locator('h5.card-title').nth(0);
-        const productPrice = productCard.locator('.card-title.card-price');
-        const productDescription = productCard.locator('p.card-text');
+        const productPrice = productCard.locator('.card-title.card-price').nth(0);
+        const productDescription = productCard.locator('p.card-text').nth(0);
+        const addToCartButton = productCard.locator('button:has-text("ADD TO CART")').nth(0);
         await page.waitForSelector('.card');
         await expect(productName).toBeVisible();
         await expect(productName).toHaveText('Wooden Chair');
@@ -158,9 +171,12 @@ test.describe.serial('Home, Categories and Cart Page Components', () => {
         await expect(productDescription).toHaveText('A wooden chair....');
     
         // Expect Cart page to load
-        await page.getByRole('button', { name: 'ADD TO CART' }).nth(0).click();
+        // await page.getByRole('button', { name: 'ADD TO CART' }).nth(0).click();
+        await expect(addToCartButton).toBeVisible();
+        await addToCartButton.click();
         await page.click('text=Cart');
         await expect(page.url()).toBe('http://localhost:3000/cart');
+        await page.goto('http://localhost:3000/cart');
     
         // Expect the product to be in cart
         const item = page.locator('.col-md-7 .card');
