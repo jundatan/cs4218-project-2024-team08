@@ -14,6 +14,9 @@
 - Contributed to the writing and editing of the Milestone 2 report
 
 # Darius Ng Teng Wee
+- Wrote UI testing testcases for [update-user-details.spec.cjs](./tests/update-user-details.spec.cjs) file.
+- Wrote Integration testing testcases for [productController-integration.test.js](./controllers/productController-integration.test.js) file and
+[authController-integration.test.js](./controllers/authController-integration.test.js) file
 - Contributed to the writing and editing of the Milestone 2 report
 
 # Dylan Sng Jie An
