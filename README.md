@@ -1,5 +1,8 @@
 ## MS2 Code Coverage Summary [HERE](MS2.pdf)
 
+## NOTE when running UI test locally 
+Change DEV_MODE in .env file to ```DEV_MODE=test``` before running npm run dev for playwright test locally.
+
 ## Contributions
 # Tan Jun Da
 - Wrote UI testing testcases for [admin.spec.cjs](./tests/admin.spec.cjs) file.
