@@ -25,4 +25,8 @@ The other members in the team will be able to see an existing team with your tea
 # Yeo Wen Jue
 # Darius Ng Teng Wee
 # Dylan Sng Jie An
+- Wrote UI testing testcases for [Search and ProductDetails component](./tests/search-productdetails.spec.cjs)
+- Wrote Integration testing testcases for [Search and ProductDetails component](./client/integrationTests/SearchInput_Search_ProductDetails.integration.test.js)
+- Modified imports for [search.js](./client/src/context/search.js) in order for integration testing to work
+
 # Koh Chen Huang, Samuel
