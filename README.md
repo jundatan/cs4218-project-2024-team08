@@ -17,12 +17,16 @@ The other members in the team will be able to see an existing team with your tea
 
 ## Contributions
 # Tan Jun Da
-- Wrote UI testing testcases for ./tests/admin.spec.cjs file.
-- Wrote Integration testing testcases for ./controllers/categoryControllerModel.integration.test.js file.
-- Created fake database and admin user in ./config/db.js
+- Wrote UI testing testcases for [admin.spec.cjs](./tests/admin.spec.cjs) file.
+- Wrote Integration testing testcases for [categoryControllerModel.integration.test.js](./controllers/categoryControllerModel.integration.test.js) file.
+- Created fake database and admin user in [db.js](./config/db.js)
 - Ran SonarQube test with code coverage and write report
 
 # Yeo Wen Jue
 # Darius Ng Teng Wee
 # Dylan Sng Jie An
+- Wrote UI testing testcases for [search-productdetails.spec.cjs](./tests/search-productdetails.spec.cjs) file.
+- Wrote Integration testing testcases for [SearchInput_Search_ProductDetails.integration.test.js](./client/integrationTests/SearchInput_Search_ProductDetails.integration.test.js) file.
+- Modified imports for [search.js](./client/src/context/search.js) in order for integration testing to work.
+
 # Koh Chen Huang, Samuel
