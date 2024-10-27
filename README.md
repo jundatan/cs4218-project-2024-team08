@@ -1,7 +1,12 @@
 ## MS2 Code Coverage Summary [HERE](MS2.pdf)
 
+## NOTE when trying to run server or npm run dev locally
+Copy the content from package.module.json to package.json before running. It should contain ```"type" : "module"```.
+
 ## NOTE when running UI test locally 
-Change DEV_MODE in .env file to ```DEV_MODE = test``` before running npm run dev for playwright test locally.
+Change ```DEV_MODE``` in .env file to ```DEV_MODE = test``` before running ```npm run dev``` for playwright test locally.
+
+# Unit, integration and UI testing can be found in CI. UI test files are best to be tested individually.
 
 ## Contributions
 # Tan Jun Da
