@@ -29,4 +29,8 @@ Change DEV_MODE in .env file to ```DEV_MODE = test``` before running npm run dev
 - Contributed to the writing and editing of the Milestone 2 report
 
 # Koh Chen Huang, Samuel
+- Wrote UI testing testcases for [auth.spec.cjs](./tests/auth.spec.cjs) file.
+- Wrote Integration testing testcases for [authController.integration.test.js](./controllers/authController.integration.test.js) file.
+- Wrote CI workflow for running of UI tests using Playwright under [playwright.yml](./.github/workflows/playwright.yml) and
+modified the configurations under [playwright.config.js](./playwright.config.js) file to work with the CI.
 - Contributed to the writing and editing of the Milestone 2 report
