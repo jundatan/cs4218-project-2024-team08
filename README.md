@@ -23,7 +23,11 @@ The other members in the team will be able to see an existing team with your tea
 - Ran SonarQube test with code coverage and write report
 
 # Yeo Wen Jue
+- Wrote UI testing testcases for [home-cart-categories.spec.cjs](./tests/home-cart-categories.spec.cjs) file.
+- Wrote Integration testing testcases for [categoryController.integration.test.js](./controllers/categoryController.integration.test.js) file.
+
 # Darius Ng Teng Wee
+
 # Dylan Sng Jie An
 - Wrote UI testing testcases for [search-productdetails.spec.cjs](./tests/search-productdetails.spec.cjs) file.
 - Wrote Integration testing testcases for [SearchInput_Search_ProductDetails.integration.test.js](./client/integrationTests/SearchInput_Search_ProductDetails.integration.test.js) file.
